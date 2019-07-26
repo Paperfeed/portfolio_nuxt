@@ -38,21 +38,13 @@
                 ref: this.$refs.image
             }
         },
-        watch: {
-            src: function(newVal, oldVal) {this.checkIfCached(newVal, oldVal)},
-            srcset: function(newVal, oldVal) {this.checkIfCached(newVal, oldVal)}
+        updated() {
+            const {image} = this.$refs;
+
+            if (!image.complete) this.loading = true;
         },
         methods: {
-            checkIfCached(newVal, oldVal) {
-                const {image} = this.$refs;
-
-                if (newVal !== oldVal && !image.complete) {
-                    console.log('image not cached');
-                    this.loading = true;
-                }
-            },
             onLoaded() {
-                console.log('image loaded');
                 // setTimeout((component) => { console.log('loaded', component); component.loading = false;}, Math.random() * 2000, this);
                 this.loading = false;
             },
