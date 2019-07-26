@@ -1,0 +1,22 @@
+[build]
+  command = "npm run generate"
+  publish = "dist"
+
+# Production context
+[context.production]
+  environment = { ACCESS_TOKEN = "secret" }
+
+# Deploy Preview context: All deploys generated from a pull/merge requests
+[context.deploy-preview]
+  environment = { ACCESS_TOKEN = "secret" }
+
+# Branch deploy context: Not pull/merge and not production
+[context.branch-deploy]
+  command = "make staging"
+
+# Specific branch context: Deploys from this branch
+# will take these settings and override their
+# current ones.
+[context.staging]
+  command = "npm run generate"
+  environment = { ACCESS_TOKEN = "secret" }
