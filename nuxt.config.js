@@ -25,7 +25,7 @@ export default {
     ** Global CSS
     */
     css: [
-        '~/assets/main.css',
+        '~/assets/css/main.css',
         '@fortawesome/fontawesome-free-webfonts',
         '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
         // '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
@@ -60,7 +60,6 @@ export default {
         ]
     },
     buefy: {
-        materialDesignIcons: false,
         css: false
     },
     optimizedImages: {
@@ -101,6 +100,14 @@ export default {
     */
     build: {
         extend (config, { isDev, isClient, loaders: { vue } }) {
+            if (isDev) {
+                if (isClient) {
+                    config.devtool = 'eval-source-map';
+                } else {
+                    config.devtool = 'inline-source-map';
+                }
+            }
+
             if (isClient) {
                 vue.transformAssetUrls.img = ['data-src', 'src'];
                 vue.transformAssetUrls.source = ['data-srcset', 'srcset'];

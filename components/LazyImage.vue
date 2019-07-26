@@ -34,18 +34,15 @@
         },
         data() {
             return {
-                loading: true,
-                ref: this.$refs.image
+                loading: true
             }
         },
         updated() {
             const {image} = this.$refs;
-
             if (!image.complete) this.loading = true;
         },
         methods: {
             onLoaded() {
-                // setTimeout((component) => { console.log('loaded', component); component.loading = false;}, Math.random() * 2000, this);
                 this.loading = false;
             },
         }

@@ -35,7 +35,7 @@
                 ease: Bounce.easeOut
             });
 
-            this.listener = window.addEventListener('scroll', throttle(this.checkPosition, 1000));
+            this.listener = window.addEventListener('scroll', throttle(this.checkPosition, 250));
         },
         destroyed() {
             window.removeEventListener('scroll', this.listener);
@@ -60,6 +60,8 @@
 </script>
 
 <style scoped lang="scss">
+    @import "../assets/css/variables";
+
     .scrollToTop {
         position: fixed;
         bottom: 3rem;
@@ -68,7 +70,11 @@
         height: 3rem;
 
         border-radius: 50%;
-        background: #0C9A9A;
+        background: $primary;
         box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3), 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .icon {
+        color: white;
     }
 </style>

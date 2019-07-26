@@ -6,16 +6,20 @@
              :style="{ '--itemsPerRow': itemsPerRow}"
         >
             <div class='gallery__tab-item' v-for="n in pagination">
-                <div class="image__container">
+                <div class="image__container"
+                     ref="imageContainer"
+                >
                     <lazy-image v-if="images[(currentTab - 1) * pagination + n-1] !== undefined"
                                 alt=""
                                 :src="images[(currentTab - 1) * pagination + n-1].src"
                                 :placeholder="images[(currentTab - 1) * pagination + n-1].placeholder"
                                 @click="openInLightbox"
                                 :data-index="n"
-                                :ref="`item${n}`"
                     />
-                    <div class="image__placeholder" v-else></div>
+                    <div v-else
+                         class="image__placeholder"
+                         :data-index="n"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -54,20 +58,21 @@
         methods: {
             openInLightbox(event) {
                 const { lightbox } = this.$refs;
-                const dataIndex = parseInt(event.target.parentNode.dataset.index);
+                const dataIndex = parseInt(event.currentTarget.dataset.index);
                 const index = ((this.currentTab - 1) * this.pagination) + dataIndex;
 
                 lightbox.open(index, event.target);
             },
             onLightboxChange(newIndex) {
-                const { lightbox } = this.$refs;
+                const { lightbox, imageContainer } = this.$refs;
                 const newTab = Math.ceil(newIndex / this.pagination);
+                const target = imageContainer[(newIndex - 1) % this.pagination];
 
-                if (newTab !== this.currentTab) this.currentTab = newTab;
+                if (newTab !== this.currentTab) {
+                    this.currentTab = newTab;
+                }
 
-                const ref = this.$refs[`item${(newIndex - 1) % this.pagination + 1}`][0].$refs.image;
-
-                lightbox.setTargetStyle(ref);
+                lightbox.setTargetStyle(target);
             }
         },
     }

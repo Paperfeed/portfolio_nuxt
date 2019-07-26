@@ -8,6 +8,7 @@
     "precommit": "npm run lint",
     "test": "jest",
     "dev": "nuxt",
+    "debug": "node --inspect node_modules/nuxt/bin/nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"

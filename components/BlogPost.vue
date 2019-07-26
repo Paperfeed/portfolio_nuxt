@@ -58,6 +58,8 @@
 </script>
 
 <style scoped lang="scss">
+    @import '../assets/css/variables.scss';
+
     .blog-post {
         position: relative;
         padding: 2rem;
@@ -69,6 +71,13 @@
 
         background: white;
         color: black;
+
+        @include mobile {
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
+
+            border-radius: 0;
+        }
     }
 
     .blog-post-content {

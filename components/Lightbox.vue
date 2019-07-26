@@ -7,10 +7,10 @@
 
         <lazy-image ref="image"
                     :style="style"
-                    :src="currentImageData.src"
                     :srcset="currentImageData.srcSet"
                     v-show="isActive || isTransitioning"
         />
+        <img :srcset="currentImageData.nextSrcSet" style="display: none;"/>
 
     </div>
 </template>
@@ -31,30 +31,20 @@
                 isActive: false,
                 style: '',
                 currentImage: 1,
+                isTransitioning: false,
+                animationQueue: [],
+                targetStyle: {},
             }
-        },
-        created(){
-            this.isTransitioning = false;
-            this.animationQueue = [];
-            this.targetStyle = {};
-
         },
         mounted() {
             this.listeners = [];
             this.listeners.push(window.addEventListener('keyup', this.hotkeyHandler));
             this.listeners.push(window.addEventListener('wheel', this.hotkeyHandler));
             this.timeline = new TimelineLite();
-
-
         },
         beforeDestroy() {
             this.listeners.forEach(listener => window.removeEventListener(listener, this.hotkeyHandler));
             clearAllBodyScrollLocks();
-        },
-        watch: {
-            currentImage() {
-                // On current image change
-            }
         },
         computed: {
             totalImages() {
@@ -62,10 +52,17 @@
             },
             currentImageData() {
                 const currentImage = this.images[this.currentImage - 1];
+                let nextImage = { src: undefined, srcset: undefined };
+
+                if (this.hasNextImage()) {
+                    nextImage = this.images[this.currentImage];
+                }
 
                 return {
                     src: currentImage.src,
                     srcSet: currentImage.srcSet,
+                    nextSrc: nextImage.src,
+                    nextSrcSet: nextImage.srcSet,
                 }
             }
         },
@@ -80,7 +77,7 @@
                 return this.currentImage + 1 < this.totalImages;
             },
             hasPreviousImage() {
-                return this.currentImage - 1 >= 0;
+                return this.currentImage - 1 > 0;
             },
             nextImage(direction) {
                 if (this.hasNextImage()) {
@@ -161,6 +158,14 @@
                     ease: Power1.easeOut,
                 });*/
             },
+            // Doesn't seem to work with srcSet
+            /*preloadImage() {
+                if (this.hasNextImage()) {
+                    const nextImage = this.images[this.currentImage + 1];
+                    this.preload = new Image();
+                    this.preload.srcSet = nextImage.srcSet;
+                }
+            },*/
             open(index, target) {
                 const { image } = this.$refs.image.$refs;
 
@@ -175,7 +180,7 @@
                 if (target) this.setTargetStyle(target);
 
                 this.isActive = true;
-                disableBodyScroll(this.$refs.lightbox, { reserveScrollBarGap: true });
+                disableBodyScroll(this.$refs.lightbox, { reserveScrollBarGap: false });
             },
             close() {
                 const { image } = this.$refs.image.$refs;
@@ -244,11 +249,15 @@
         pointer-events: none;
         transition: opacity 0.2s ease-in;
 
-        img {
+        .lazyImage {
+            padding: .5rem;
+        }
+
+        /deep/ img {
             max-height: 100%;
             max-width: 100%;
-            padding: .5rem;
             user-select: none;
+            margin: 0 auto;
         }
 
         &.open {

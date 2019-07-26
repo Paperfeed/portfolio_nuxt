@@ -1,7 +1,11 @@
 <template>
-    <div class="lds-ripple">
-        <div></div>
-        <div></div>
+    <div class="container">
+        <div class="aspect-ratio">
+            <div class="lds-ripple">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -12,14 +16,31 @@
 </script>
 
 <style scoped lang="scss">
+    .container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .aspect-ratio {
+        padding-top: 100%;
+        height: 0;
+    }
+
     .lds-ripple {
-        position: relative;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateY(-50%);
+
         margin: 0 auto;
 
         width: 100%;
         height: 100%;
         max-height: 64px;
         max-width: 64px;
+
 
         div {
             position: absolute;

@@ -1,8 +1,8 @@
 <template>
     <section class="section columns is-centered">
         <div class="column blog">
-            <h1 class="title">Blog</h1>
-            <h2 class="subtitle">Subtitle</h2>
+            <h1 class="title">Ramblings of a madman</h1>
+            <h2 class="subtitle">or just a boring blog, whatever</h2>
 
             <transition-group appear
                               name="slide-fade"
@@ -101,18 +101,16 @@
 
 
 
-<style>
-    @import '../assets/prism-darcula.css';
-</style>
-
 <style scoped lang="scss">
+    @import '../assets/prism-darcula.css';
+
     .blog {
         margin-bottom: 3rem;
         min-width: 0;
         max-width: 768px;
     }
     .blog-post-list {
-        margin: 0 auto;
+        margin: 3rem auto 0;
 
     }
 </style>

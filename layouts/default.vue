@@ -52,18 +52,15 @@
                 navHidden: true,
                 items: [
                     {
-                        title: 'Home',
-                        icon: 'home',
+                        title: 'About',
                         to: { name: 'index' }
                     },
                     {
                         title: 'Blog',
-                        icon: 'lightbulb',
                         to: { name: 'blog' }
                     },
                     {
                         title: 'Gallery',
-                        icon: 'lightbulb',
                         to: { name: 'gallery' }
                     },
                 ]
@@ -80,48 +77,6 @@
     }
 </script>
 
-<!--Bulma Customization-->
 <style lang="scss">
-    // Import Bulma's core
-    @import "~bulma/sass/utilities/_all";
-
-    // Set your colors
-    $primary: #396c99;
-    $primary-invert: findColorInvert($primary);
-    $twitter: #4099FF;
-    $twitter-invert: findColorInvert($twitter);
-
-    // Setup $colors to use as bulma classes (e.g. 'is-twitter')
-    $colors: (
-        "white": ($white, $black),
-        "black": ($black, $white),
-        "light": ($light, $light-invert),
-        "dark": ($dark, $dark-invert),
-        "primary": ($primary, $primary-invert),
-        "info": ($info, $info-invert),
-        "success": ($success, $success-invert),
-        "warning": ($warning, $warning-invert),
-        "danger": ($danger, $danger-invert),
-        "twitter": ($twitter, $twitter-invert)
-    );
-
-    // Links
-    $link: $primary;
-    $link-invert: $primary-invert;
-    $link-focus-border: $primary;
-
-    //Navbar
-    $navbar-breakpoint: 400px + (2 * $gap);
-
-    // Import Bulma and Buefy styles
-    @import "~bulma";
-    @import "~buefy/src/scss/buefy";
-
-    .tag:not(body) {
-        background-color: unset;
-    }
-
-    .navbar-item {
-        transition: background-color 0.3s ease-in-out;
-    }
+    @import '../assets/css/bulma.scss';
 </style>
