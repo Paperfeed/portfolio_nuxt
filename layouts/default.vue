@@ -22,44 +22,21 @@
             <div class="navbar-menu" :class="{'is-active': !navHidden}">
                 <div class="navbar-end">
 
-                    <div class="navbar-item"
-                         v-for="(item, key) of items"
-                         :key="`nav-item-${key}`"
+                    <nuxt-link class="navbar-item"
+                               v-for="(item, key) of items"
+                               :key="`nav-item-${key}`"
+                               :to="item.to"
+                               exact-active-class="is-active"
                     >
-                        <nuxt-link :to="item.to"
-                                   exact-active-class="is-active"
-                        >
-                            <b-icon :icon="item.icon"/>
-                            {{ item.title }}
-                        </nuxt-link>
-                    </div>
+                        {{ item.title }}
+                    </nuxt-link>
                 </div>
             </div>
 
         </nav>
 
         <section class="main-content columns">
-            <aside class="column is-2 section">
-                <p class="menu-label is-hidden-touch">
-                    General
-                </p>
-                <ul class="menu-list">
-                    <li
-                        v-for="(item, key) of items"
-                        :key="key"
-                    >
-                        <nuxt-link
-                            :to="item.to"
-                            exact-active-class="is-active"
-                        >
-                            <b-icon :icon="item.icon"/>
-                            {{ item.title }}
-                        </nuxt-link>
-                    </li>
-                </ul>
-            </aside>
-
-            <div class="container column is-10">
+            <div class="container column">
                 <nuxt/>
             </div>
         </section>
@@ -109,7 +86,7 @@
     @import "~bulma/sass/utilities/_all";
 
     // Set your colors
-    $primary: #446199;
+    $primary: #396c99;
     $primary-invert: findColorInvert($primary);
     $twitter: #4099FF;
     $twitter-invert: findColorInvert($twitter);
@@ -133,7 +110,18 @@
     $link-invert: $primary-invert;
     $link-focus-border: $primary;
 
+    //Navbar
+    $navbar-breakpoint: 400px + (2 * $gap);
+
     // Import Bulma and Buefy styles
     @import "~bulma";
     @import "~buefy/src/scss/buefy";
+
+    .tag:not(body) {
+        background-color: unset;
+    }
+
+    .navbar-item {
+        transition: background-color 0.3s ease-in-out;
+    }
 </style>

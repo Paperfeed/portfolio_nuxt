@@ -1,0 +1,74 @@
+<template>
+    <div class="scrollToTop block"
+         ref="circle"
+         @click="scrollToTop"
+    >
+        <span class="icon is-large"
+              ref="icon"
+        >
+            <i class="fas fa-arrow-up"></i>
+        </span>
+    </div>
+</template>
+
+<script>
+    import BIcon from 'buefy/src/components/icon/Icon';
+    import throttle from 'lodash-es/throttle';
+    import {TimelineLite} from 'gsap';
+
+    export default {
+
+        name: 'ScrollToTop',
+        components: { BIcon },
+        mounted() {
+            const { circle, icon } = this.$refs;
+
+            this.timeline = new TimelineLite();
+            this.timeline.pause();
+            this.timeline.from(circle, .3, {
+                opacity: 0,
+                scale: 2,
+                ease: Power1.easeOut
+            }).from( icon, .6, {
+                opacity: 0,
+                y: '60%',
+                ease: Bounce.easeOut
+            });
+
+            this.listener = window.addEventListener('scroll', throttle(this.checkPosition, 1000));
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.listener);
+        },
+        methods: {
+            scrollToTop() {
+                window.scroll({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            },
+            checkPosition(event) {
+
+                if (event.target.scrollingElement.scrollTop > 1000) {
+                    this.timeline.play();
+                } else {
+                    this.timeline.reverse();
+                }
+            }
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    .scrollToTop {
+        position: fixed;
+        bottom: 3rem;
+        right: 1.5rem;
+        width: 3rem;
+        height: 3rem;
+
+        border-radius: 50%;
+        background: #0C9A9A;
+        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3), 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+</style>

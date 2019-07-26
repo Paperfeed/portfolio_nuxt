@@ -1,13 +1,15 @@
 <template>
     <div class="lightbox"
+         ref="lightbox"
          v-bind:class="[isActive ? 'open' : 'closed']"
          @click="close"
     >
 
         <lazy-image ref="image"
                     :style="style"
-                    :srcset="images[currentImage - 1].srcSet"
-                    v-show="isActive"
+                    :src="currentImageData.src"
+                    :srcset="currentImageData.srcSet"
+                    v-show="isActive || isTransitioning"
         />
 
     </div>
@@ -15,12 +17,12 @@
 
 <script>
     import { TimelineLite } from 'gsap/TimelineLite';
-    import LoadingSpinner from './LoadingSpinner';
     import LazyImage from './LazyImage';
+    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
     export default {
         name: 'lightbox',
-        components: { LazyImage, LoadingSpinner },
+        components: { LazyImage },
         props: {
             images: Array,
         },
@@ -28,30 +30,43 @@
             return {
                 isActive: false,
                 style: '',
-                toStyle: {},
                 currentImage: 1,
-                loading: true,
-                transitioning: false,
-                animationQueue: []
             }
+        },
+        created(){
+            this.isTransitioning = false;
+            this.animationQueue = [];
+            this.targetStyle = {};
+
         },
         mounted() {
             this.listeners = [];
             this.listeners.push(window.addEventListener('keyup', this.hotkeyHandler));
             this.listeners.push(window.addEventListener('wheel', this.hotkeyHandler));
             this.timeline = new TimelineLite();
+
+
         },
         beforeDestroy() {
             this.listeners.forEach(listener => window.removeEventListener(listener, this.hotkeyHandler));
+            clearAllBodyScrollLocks();
         },
         watch: {
             currentImage() {
-                if (this.isActive) this.updateImagePosition();
+                // On current image change
             }
         },
         computed: {
             totalImages() {
                 return this.images.length + 1;
+            },
+            currentImageData() {
+                const currentImage = this.images[this.currentImage - 1];
+
+                return {
+                    src: currentImage.src,
+                    srcSet: currentImage.srcSet,
+                }
             }
         },
         methods: {
@@ -59,15 +74,7 @@
                 this.currentImage = index;
             },
             setTargetStyle(target) {
-                    this.targetStyle = this.getTargetBoundingRect(target);
-            },
-            updateImagePosition() {
-                const { image } = this.$refs;
-
-                // Don't display loading spinner for cached images
-                if (!image.complete) {
-                    this.loading = true;
-                }
+                this.targetStyle = this.getTargetBoundingRect(target);
             },
             hasNextImage() {
                 return this.currentImage + 1 < this.totalImages;
@@ -86,7 +93,10 @@
                 }
             },
             changeImage(index, direction) {
-                if (this.transitioning) {
+                this.setCurrentImage(index);
+                this.$emit('change', this.currentImage);
+
+                /*if (this.transitioning) {
                     this.animationQueue.push([this.currentImage + 1, direction]);
                     return;
                 }
@@ -149,40 +159,41 @@
                     y: '0%',
                     opacity: 1,
                     ease: Power1.easeOut,
-                });
+                });*/
             },
             open(index, target) {
-                const { image } = this.$refs;
+                const { image } = this.$refs.image.$refs;
 
                 if (this.timeline.active) {
                     this.timeline.eventCallback('onComplete', null);
                     this.timeline.clear();
                 }
 
-                if (!this.loading) image.style = '';
+                image.style = '';
 
                 if (index !== this.currentImage) this.setCurrentImage(index);
                 if (target) this.setTargetStyle(target);
 
                 this.isActive = true;
+                disableBodyScroll(this.$refs.lightbox, { reserveScrollBarGap: true });
             },
             close() {
-                const { image } = this.$refs;
+                const { image } = this.$refs.image.$refs;
 
-                this.timeline.fromTo(image, 0.4, {
+                this.timeline.fromTo(image, 0.3, {
                     ...this.getTargetBoundingRect(image)
                 }, {
                     ...this.targetStyle,
                     ease: Power1.easeOut,
                     onComplete: () => {
                         image.style = 'opacity: 0';
+                        this.isTransitioning = false;
                     }
                 });
 
                 this.isActive = false;
-            },
-            toggle() {
-                this.isActive = !this.isActive;
+                this.isTransitioning = true;
+                enableBodyScroll(this.$refs.lightbox);
             },
             getTargetBoundingRect(target) {
                 const boundingRect = target.getBoundingClientRect();
@@ -219,7 +230,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     .lightbox {
         position: fixed;
         top: 0;

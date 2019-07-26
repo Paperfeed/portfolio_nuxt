@@ -1,14 +1,19 @@
 <template>
     <section class="gallery">
-        <div class="gallery__tab">
+
+
+        <div class="gallery__tab"
+             :style="{ '--itemsPerRow': itemsPerRow}"
+        >
             <div class='gallery__tab-item' v-for="n in pagination">
-                <div class="image__container" >
-                    <img v-if="images[(currentTab - 1) * pagination + n-1] !== undefined"
-                         alt=""
-                         :srcset="images[(currentTab - 1) * pagination + n-1].srcSet"
-                         @click="openInLightbox"
-                         :data-index="n"
-                         :ref="`item${n}`"
+                <div class="image__container">
+                    <lazy-image v-if="images[(currentTab - 1) * pagination + n-1] !== undefined"
+                                alt=""
+                                :src="images[(currentTab - 1) * pagination + n-1].src"
+                                :placeholder="images[(currentTab - 1) * pagination + n-1].placeholder"
+                                @click="openInLightbox"
+                                :data-index="n"
+                                :ref="`item${n}`"
                     />
                     <div class="image__placeholder" v-else></div>
                 </div>
@@ -31,13 +36,15 @@
 <script>
     import BPagination from 'buefy/src/components/pagination/Pagination';
     import Lightbox from './Lightbox';
+    import LazyImage from './LazyImage';
 
     export default {
         name: 'photo-gallery',
-        components: { Lightbox, BPagination },
+        components: { LazyImage, Lightbox, BPagination },
         props: {
             images: Array,
             pagination: Number,
+            itemsPerRow: Number
         },
         data() {
             return {
@@ -45,39 +52,39 @@
             }
         },
         methods: {
-            toggleLightbox() {
-                this.$refs.lightbox.toggle();
-            },
             openInLightbox(event) {
-                const {lightbox} = this.$refs;
-                const index = ((this.currentTab - 1) * this.pagination) + parseInt(event.target.dataset.index);
+                const { lightbox } = this.$refs;
+                const dataIndex = parseInt(event.target.parentNode.dataset.index);
+                const index = ((this.currentTab - 1) * this.pagination) + dataIndex;
 
                 lightbox.open(index, event.target);
             },
             onLightboxChange(newIndex) {
-                const {lightbox} = this.$refs;
+                const { lightbox } = this.$refs;
                 const newTab = Math.ceil(newIndex / this.pagination);
 
                 if (newTab !== this.currentTab) this.currentTab = newTab;
 
-                lightbox.setTargetStyle(this.$refs[`item${(newIndex - 1) % this.pagination + 1}`][0]);
+                const ref = this.$refs[`item${(newIndex - 1) % this.pagination + 1}`][0].$refs.image;
+
+                lightbox.setTargetStyle(ref);
             }
         },
     }
 </script>
 
-<style scoped lang="scss">
-    $gallery-gap: 0.5rem;
+<style lang="scss">
+    $gallery-gap: 1%;
 
     .gallery__tab {
         display: flex;
         flex-wrap: wrap;
-        padding: $gallery-gap / 2;
+        justify-content: space-between;
     }
 
     .gallery__tab-item {
-        flex-basis: calc(33% - #{$gallery-gap});
-        margin: $gallery-gap / 2;
+        width: calc(100% / var(--itemsPerRow) - #{$gallery-gap});
+        margin-bottom: $gallery-gap * 1.4;
     }
 
     .image__container {
@@ -86,7 +93,7 @@
         position: relative;
         overflow: hidden;
 
-        img {
+        .lazyImage {
             position: absolute;
             top: 0;
             bottom: 0;
@@ -95,7 +102,6 @@
 
             width: 100%;
             height: 100%;
-            object-fit: cover;
 
             filter: brightness(0.9);
             transition: all 0.2s ease-in-out;
@@ -106,8 +112,14 @@
             }
         }
     }
+</style>
 
-    .image__placeholder {
-
+<style lang="scss">
+    .image__container {
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 </style>

@@ -13,7 +13,8 @@ export default {
             { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat&display=swap'},
         ]
     },
     /*
@@ -24,7 +25,11 @@ export default {
     ** Global CSS
     */
     css: [
-        'assets/main.css'
+        '~/assets/main.css',
+        '@fortawesome/fontawesome-free-webfonts',
+        '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
+        // '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
+        '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css',
     ],
     env: {
         ...contentful
@@ -39,19 +44,30 @@ export default {
     ** Nuxt.js modules
     */
     modules: [
-        // Doc: https://buefy.github.io/#/documentation
-        'nuxt-buefy',
-        // Doc: https://axios.nuxtjs.org/usage
-        '@nuxtjs/axios',
+        'nuxt-buefy', // https://buefy.github.io/#/documentation
+        // 'nuxt-fontawesome', // https://www.npmjs.com/package/nuxt-fontawesome
+        '@nuxtjs/axios', // https://axios.nuxtjs.org/usage
         '@nuxtjs/pwa',
-        // '@nuxtjs/eslint-module',
-        '@bazzite/nuxt-optimized-images',
+        '@bazzite/nuxt-optimized-images', // https://github.com/bazzite/nuxt-optimized-images
     ],
+    fontawesome: {
+        component: 'fa',
+        imports: [
+            {
+                set: '@fortawesome/free-solid-svg-icons',
+                icons: ['fas']
+            }
+        ]
+    },
+    buefy: {
+        materialDesignIcons: false,
+        css: false
+    },
     optimizedImages: {
         inlineImageLimit: -1,
         handleImages: ['jpeg', 'png', 'svg', 'webp', 'gif'],
         optimizeImages: true,
-        optimizeImagesInDev: true,
+        optimizeImagesInDev: false,
         mozjpeg: {
             quality: 85
         },
@@ -69,6 +85,7 @@ export default {
             quality: 85
         },
         responsive: {
+            placeholder: true,
             sizes: [300, 600, 1200, 2000],
             adapter: require('responsive-loader/sharp')
         },
