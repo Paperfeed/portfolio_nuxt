@@ -26,6 +26,7 @@
                                v-for="(item, key) of items"
                                :key="`nav-item-${key}`"
                                :to="item.to"
+                               @click.native="closeNav"
                                exact-active-class="is-active"
                     >
                         {{ item.title }}
@@ -34,9 +35,7 @@
             </div>
         </nav>
 
-        <section class="section main-content">
-            <nuxt/>
-        </section>
+        <nuxt/>
     </div>
 </template>
 
@@ -64,7 +63,10 @@
             }
         },
         methods: {
-            toggleNav: function () {
+            closeNav() {
+                this.navHidden = true;
+            },
+            toggleNav() {
                 this.navHidden = !this.navHidden;
             }
         },
