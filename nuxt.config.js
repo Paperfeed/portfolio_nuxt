@@ -38,7 +38,8 @@ export default {
     ** Plugins to load before mounting the App
     */
     plugins: [
-        '~/plugins/vue-lazysizes.client.js'
+        '~/plugins/vue-lazysizes.client.js',
+        './plugins/hammer.js'
     ],
     /*
     ** Nuxt.js modules

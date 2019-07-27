@@ -9,6 +9,7 @@
                     :style="style"
                     :srcset="currentImageData.srcSet"
                     v-show="isActive || isTransitioning"
+                    v-swipe="touchHandler"
         />
         <img :srcset="currentImageData.nextSrcSet" style="display: none;"/>
 
@@ -18,7 +19,14 @@
 <script>
     import { TimelineLite } from 'gsap/TimelineLite';
     import LazyImage from './LazyImage';
-    import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+    import ScrollLock from '../assets/js/scroll-lock';
+
+    const Direction = {
+        UP: 0,
+        RIGHT: 1,
+        DOWN: 2,
+        LEFT: 3
+    };
 
     export default {
         name: 'lightbox',
@@ -32,8 +40,7 @@
                 style: '',
                 currentImage: 1,
                 isTransitioning: false,
-                animationQueue: [],
-                targetStyle: {},
+                currentOffset: 0,
             }
         },
         mounted() {
@@ -44,7 +51,7 @@
         },
         beforeDestroy() {
             this.listeners.forEach(listener => window.removeEventListener(listener, this.hotkeyHandler));
-            clearAllBodyScrollLocks();
+            ScrollLock.enableScroll(document.documentElement);
         },
         computed: {
             totalImages() {
@@ -70,9 +77,6 @@
             setCurrentImage(index) {
                 this.currentImage = index;
             },
-            setTargetStyle(target) {
-                this.targetStyle = this.getTargetBoundingRect(target);
-            },
             hasNextImage() {
                 return this.currentImage + 1 < this.totalImages;
             },
@@ -90,82 +94,54 @@
                 }
             },
             changeImage(index, direction) {
-                this.setCurrentImage(index);
-                this.$emit('change', this.currentImage);
+                if (this.isTransitioning) return;
 
-                /*if (this.transitioning) {
-                    this.animationQueue.push([this.currentImage + 1, direction]);
-                    return;
-                }
-
-                const {image} = this.$refs;
-                const clone = image.cloneNode(true);
+                const image =  this.$refs.image.$el;
                 let x, y;
 
-                image.parentNode.appendChild(clone);
-
-                this.setCurrentImage(index);
-                this.$emit('change', this.currentImage);
-
                 switch (direction) {
-                    case 1:  // Up
+                    case Direction.UP:
                         x = '';
-                        y = '-60%';
+                        y = -60;
                         break;
-                    case 2:  // Right
-                        x = '60%';
+                    case Direction.RIGHT:
+                        x = 60;
                         y = '';
                         break;
-                    case 3: // Down
+                    case Direction.DOWN:
                         x = '';
-                        y = '60%';
+                        y = 60;
                         break;
-                    default: // Left
-                        x = '-60%';
+                    case Direction.LEFT:
+                        x = -60;
                         y = '';
                 }
 
-                this.transitioning = true;
+                this.isTransitioning = true;
 
                 this.timeline.clear();
-                this.timeline.to(clone, 0.2, {
-                    position: 'absolute',
-                    x: x,
-                    y: y,
-                    opacity: 0,
+                this.timeline.to(image, 0.1, {
+                    x: `${x}%`,
+                    y: `${y}%`,
+                    opacity: 0.5,
                     ease: Power1.easeIn,
                     onComplete: () => {
-                        clone.remove();
-                        this.transitioning = false;
-
-                        if (this.animationQueue.length) {
-                            console.log('found animation');
-                            const args = this.animationQueue.shift();
-                            this.changeImage(args[0], args[1])
-                        }
+                        this.isTransitioning = false;
+                        this.setCurrentImage(index);
+                        this.$emit('change', this.currentImage);
+                        this.timeline.fromTo(image, 0.1, {
+                            x: `${-x}%`,
+                            y: `${-y}%`,
+                            opacity: 0.5,
+                        }, {
+                            x: '0%',
+                            y: '0%',
+                            opacity: 1,
+                            ease: Power1.easeOut
+                        });
                     }
-                }).fromTo(image, 0.2, {
-                    // position: 'absolute',
-                    x: -x,
-                    y: -y,
-                    opacity: 0,
-                    ease: Power1.easeOut,
-                }, {
-                    // position: 'relative',
-                    x: '0%',
-                    y: '0%',
-                    opacity: 1,
-                    ease: Power1.easeOut,
-                });*/
+                })
             },
-            // Doesn't seem to work with srcSet
-            /*preloadImage() {
-                if (this.hasNextImage()) {
-                    const nextImage = this.images[this.currentImage + 1];
-                    this.preload = new Image();
-                    this.preload.srcSet = nextImage.srcSet;
-                }
-            },*/
             open(index, target) {
                 const { image } = this.$refs.image.$refs;
 
@@ -180,12 +156,14 @@
                 if (target) this.setTargetStyle(target);
 
                 this.isActive = true;
-                disableBodyScroll(this.$refs.lightbox, { reserveScrollBarGap: false });
+                ScrollLock.disableScroll(document.documentElement);
             },
             close() {
                 const { image } = this.$refs.image.$refs;
+                image.style = '';
 
                 this.timeline.fromTo(image, 0.3, {
+                    margin: 0,
                     ...this.getTargetBoundingRect(image)
                 }, {
                     ...this.targetStyle,
@@ -198,19 +176,23 @@
 
                 this.isActive = false;
                 this.isTransitioning = true;
-                enableBodyScroll(this.$refs.lightbox);
+                ScrollLock.enableScroll(document.documentElement);
+            },
+            setTargetStyle(target) {
+                console.log(target);
+                this.targetStyle = this.getTargetBoundingRect(target);
             },
             getTargetBoundingRect(target) {
                 const boundingRect = target.getBoundingClientRect();
 
                 if (boundingRect) {
                     return {
-                        top: `${boundingRect.top}px`,
-                        bottom: `${boundingRect.bottom}px`,
-                        right: `${boundingRect.right}px`,
-                        left: `${boundingRect.left}px`,
-                        height: `${boundingRect.height}px`,
-                        width: `${boundingRect.width}px`
+                        top: `${Math.round(boundingRect.top)}px`,
+                        bottom: `${Math.round(boundingRect.bottom)}px`,
+                        right: `${Math.round(boundingRect.right)}px`,
+                        left: `${Math.round(boundingRect.left)}px`,
+                        height: `${Math.round(boundingRect.height)}px`,
+                        width: `${Math.round(boundingRect.width)}px`
                     }
                 }
             },
@@ -219,16 +201,40 @@
 
                 if (event.type === 'keyup') {
                     switch (event.key) {
-                        case 'ArrowLeft':
-                            this.previousImage(4);
-                            break;
                         case 'ArrowRight':
-                            this.nextImage(2);
+                            this.nextImage(Direction.LEFT);
+                            break;
+                        case 'ArrowLeft':
+                            this.previousImage(Direction.RIGHT);
+                            break;
+                        case 'ArrowDown':
+                            this.nextImage(Direction.UP);
+                            break;
+                        case 'ArrowUp':
+                            this.previousImage(Direction.DOWN);
                             break;
                     }
                 } else if (event.type === 'wheel') {
-                    if (event.deltaY < 0) this.previousImage(1);
-                    if (event.deltaY > 0) this.nextImage(3);
+                    if (event.deltaY < 0) this.previousImage(Direction.UP);
+                    if (event.deltaY > 0) this.nextImage(Direction.DOWN);
+                }
+            },
+            touchHandler(event) {
+                const { image } = this.$refs;
+
+                switch (event.direction) {
+                    case Hammer.DIRECTION_RIGHT:
+                        this.previousImage(Direction.RIGHT);
+                        break;
+                    case Hammer.DIRECTION_DOWN:
+                        this.previousImage(Direction.DOWN);
+                        break;
+                    case Hammer.DIRECTION_LEFT:
+                        this.nextImage(Direction.LEFT);
+                        break;
+                    case Hammer.DIRECTION_UP:
+                        this.nextImage(Direction.UP);
+                        break;
                 }
             }
         }
@@ -250,10 +256,11 @@
         transition: opacity 0.2s ease-in;
 
         .lazyImage {
+            position: absolute;
             padding: .5rem;
         }
 
-        /deep/ img {
+        >>> img {
             max-height: 100%;
             max-width: 100%;
             user-select: none;

@@ -32,13 +32,10 @@
                     </nuxt-link>
                 </div>
             </div>
-
         </nav>
 
-        <section class="main-content columns">
-            <div class="container column">
-                <nuxt/>
-            </div>
+        <section class="section main-content">
+            <nuxt/>
         </section>
     </div>
 </template>
@@ -73,7 +70,7 @@
         },
         components: {
             Logo
-        }
+        },
     }
 </script>
 

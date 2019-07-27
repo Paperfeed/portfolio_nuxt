@@ -25,10 +25,10 @@
 
             this.timeline = new TimelineLite();
             this.timeline.pause();
-            this.timeline.from(circle, .3, {
+            this.timeline.from(circle, 1, {
                 opacity: 0,
                 scale: 2,
-                ease: Power1.easeOut
+                ease: Elastic.easeIn.config(1, 0.8)
             }).from( icon, .6, {
                 opacity: 0,
                 y: '60%',

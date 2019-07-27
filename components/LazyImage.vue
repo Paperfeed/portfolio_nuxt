@@ -62,8 +62,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        filter: blur(6px);
-        transform: scale(1.05);
+        filter: blur(3px);
         pointer-events: none;
 
         &.animateOut {

@@ -1,5 +1,5 @@
 <template>
-    <section class="section columns is-centered">
+    <div class="columns is-centered">
         <div class="column gallery__container">
             <h1 class="title is-spaced">Gallery</h1>
             <h2 class="subtitle">
@@ -15,7 +15,7 @@
                            :itemsPerRow="3"
             />
         </div>
-    </section>
+    </div>
 </template>
 
 <script>

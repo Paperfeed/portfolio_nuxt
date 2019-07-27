@@ -73,8 +73,8 @@
         color: black;
 
         @include mobile {
-            margin-left: -1.5rem;
-            margin-right: -1.5rem;
+            margin-left: -3rem;
+            margin-right: -3rem;
 
             border-radius: 0;
         }
@@ -83,16 +83,16 @@
     .blog-post-content {
         min-width: 0;
 
-        /deep/ p {
+        >>> p {
             margin: 0.75rem 0;
         }
 
-        /deep/ ol {
+        >>> ol {
             margin: 1rem 0 1rem 0.9rem;
             font-weight: bold;
         }
 
-        /deep/ img {
+        >>> img {
             margin: 0.5rem 0;
 
             ~ em {
@@ -100,7 +100,7 @@
             }
         }
 
-        /deep/ pre {
+        >>> pre {
             max-width: 100%;
             overflow: auto;
 
@@ -110,12 +110,12 @@
             }
         }
 
-        /deep/ h4 {
+        >>> h4 {
             font-size: 1.3em;
             font-weight: 200;
         }
 
-        /deep/ ul {
+        >>> ul {
             li {
                 margin: .5rem 0;
             }
