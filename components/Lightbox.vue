@@ -255,6 +255,16 @@
         pointer-events: none;
         transition: opacity 0.2s ease-in;
 
+        img {
+            max-height: 100%;
+            max-width: 100%;
+            user-select: none;
+            margin: 0 auto;
+
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
         .lazyImage {
             position: absolute;
             width: 100%;
@@ -275,18 +285,8 @@
             img {
                 position: fixed;
                 object-fit: cover;
+                transform: none;
             }
-        }
-    }
-</style>
-
-<style lang="scss">
-    .lightbox {
-        img {
-            max-height: 100%;
-            max-width: 100%;
-            user-select: none;
-            margin: 0 auto;
         }
     }
 </style>
