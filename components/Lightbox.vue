@@ -3,12 +3,12 @@
          ref="lightbox"
          v-bind:class="[isActive ? 'open' : 'closed']"
          @click="close"
+         v-swipe="touchHandler"
     >
         <lazy-image ref="image"
                     :style="style"
                     :srcset="currentImageData.srcSet"
                     v-show="isActive || isTransitioning"
-                    v-swipe="touchHandler"
         />
         <img :srcset="currentImageData.nextSrcSet" style="display: none;"/>
     </div>
@@ -75,43 +75,49 @@
             setCurrentImage(index) {
                 this.currentImage = index;
             },
+
             hasNextImage() {
                 return this.currentImage + 1 < this.totalImages;
             },
+
             hasPreviousImage() {
                 return this.currentImage - 1 > 0;
             },
+
             nextImage(direction) {
                 if (this.hasNextImage()) {
                     this.changeImage(this.currentImage + 1, direction);
                 }
             },
+
             previousImage(direction) {
                 if (this.hasPreviousImage()) {
                     this.changeImage(this.currentImage - 1, direction);
                 }
             },
+
             changeImage(index, direction) {
                 if (this.isTransitioning) return;
 
+                const offset = 60;
                 const image =  this.$refs.image.$el;
                 let x, y;
 
                 switch (direction) {
                     case Direction.UP:
                         x = '';
-                        y = -60;
+                        y = -offset;
                         break;
                     case Direction.RIGHT:
-                        x = 60;
+                        x = offset;
                         y = '';
                         break;
                     case Direction.DOWN:
                         x = '';
-                        y = 60;
+                        y = offset;
                         break;
                     case Direction.LEFT:
-                        x = -60;
+                        x = -offset;
                         y = '';
                 }
 
@@ -137,28 +143,23 @@
                             opacity: 1,
                             transform: '',
                             ease: Power1.easeOut,
-                            onComplete: () => { image.style = "" }
                         });
                     }
                 })
             },
+
             open(index, target) {
                 const { image } = this.$refs.image.$refs;
 
-                if (this.timeline.active) {
-                    this.timeline.eventCallback('onComplete', null);
-                    this.timeline.clear();
-                }
-
                 image.style = '';
-
-                if (index !== this.currentImage) this.setCurrentImage(index);
-
-                if (target) this.setTargetStyle(target);
-
                 this.isActive = true;
+                this.resetTimeline();
+                this.setTargetStyle(target);
+                this.setCurrentImage(index);
+
                 ScrollLock.disableScroll(document.documentElement);
             },
+
             close() {
                 const { image } = this.$refs.image.$refs;
                 image.style = '';
@@ -170,7 +171,7 @@
                     ...this.targetStyle,
                     ease: Power1.easeOut,
                     onComplete: () => {
-                        image.style = 'opacity: 0';
+                        // image.style = 'opacity: 0';
                         this.isTransitioning = false;
                     }
                 });
@@ -179,23 +180,33 @@
                 this.isTransitioning = true;
                 ScrollLock.enableScroll(document.documentElement);
             },
+
             setTargetStyle(target) {
-                this.targetStyle = this.getTargetBoundingRect(target);
+                if (target) {
+                    this.targetStyle = this.getTargetBoundingRect(target);
+                }
             },
+
+            resetTimeline() {
+                if (this.timeline.active) {
+                    this.timeline.eventCallback('onComplete', null);
+                    this.timeline.clear();
+                }
+            },
+
             getTargetBoundingRect(target) {
                 const boundingRect = target.getBoundingClientRect();
 
                 if (boundingRect) {
                     return {
-                        top: `${Math.round(boundingRect.top)}px`,
-                        bottom: `${Math.round(boundingRect.bottom)}px`,
-                        right: `${Math.round(boundingRect.right)}px`,
-                        left: `${Math.round(boundingRect.left)}px`,
-                        height: `${Math.round(boundingRect.height)}px`,
-                        width: `${Math.round(boundingRect.width)}px`
+                        height: `${target.clientWidth}px`,
+                        width: `${target.clientHeight}px`,
+                        top: `${boundingRect.top}px`,
+                        left: `${boundingRect.left}px`,
                     }
                 }
             },
+
             hotkeyHandler(event) {
                 if (!this.isActive) return;
 
@@ -219,6 +230,7 @@
                     if (event.deltaY > 0) this.nextImage(Direction.UP);
                 }
             },
+
             touchHandler(event) {
                 const { image } = this.$refs;
 
@@ -269,7 +281,6 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            padding: .5rem;
         }
 
         &.open {
@@ -280,8 +291,6 @@
         }
 
         &.closed {
-            padding: .5rem;
-
             img {
                 position: fixed;
                 object-fit: cover;
