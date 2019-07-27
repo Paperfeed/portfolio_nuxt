@@ -57,7 +57,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
     @import '../assets/css/variables.scss';
 
     .blog-post {
@@ -83,16 +83,16 @@
     .blog-post-content {
         min-width: 0;
 
-        >>> p {
+        p {
             margin: 0.75rem 0;
         }
 
-        >>> ol {
+        ol {
             margin: 1rem 0 1rem 0.9rem;
             font-weight: bold;
         }
 
-        >>> img {
+        img {
             margin: 0.5rem 0;
 
             ~ em {
@@ -100,7 +100,7 @@
             }
         }
 
-        >>> pre {
+        pre {
             max-width: 100%;
             overflow: auto;
 
@@ -110,12 +110,12 @@
             }
         }
 
-        >>> h4 {
+        h4 {
             font-size: 1.3em;
             font-weight: 200;
         }
 
-        >>> ul {
+        ul {
             li {
                 margin: .5rem 0;
             }

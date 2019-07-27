@@ -4,7 +4,6 @@
          v-bind:class="[isActive ? 'open' : 'closed']"
          @click="close"
     >
-
         <lazy-image ref="image"
                     :style="style"
                     :srcset="currentImageData.srcSet"
@@ -12,7 +11,6 @@
                     v-swipe="touchHandler"
         />
         <img :srcset="currentImageData.nextSrcSet" style="display: none;"/>
-
     </div>
 </template>
 
@@ -137,7 +135,9 @@
                             x: '0%',
                             y: '0%',
                             opacity: 1,
-                            ease: Power1.easeOut
+                            transform: '',
+                            ease: Power1.easeOut,
+                            onComplete: () => { image.style = "" }
                         });
                     }
                 })
@@ -153,6 +153,7 @@
                 image.style = '';
 
                 if (index !== this.currentImage) this.setCurrentImage(index);
+
                 if (target) this.setTargetStyle(target);
 
                 this.isActive = true;
@@ -179,7 +180,6 @@
                 ScrollLock.enableScroll(document.documentElement);
             },
             setTargetStyle(target) {
-                console.log(target);
                 this.targetStyle = this.getTargetBoundingRect(target);
             },
             getTargetBoundingRect(target) {
@@ -215,8 +215,8 @@
                             break;
                     }
                 } else if (event.type === 'wheel') {
-                    if (event.deltaY < 0) this.previousImage(Direction.UP);
-                    if (event.deltaY > 0) this.nextImage(Direction.DOWN);
+                    if (event.deltaY < 0) this.previousImage(Direction.DOWN);
+                    if (event.deltaY > 0) this.nextImage(Direction.UP);
                 }
             },
             touchHandler(event) {
@@ -257,14 +257,8 @@
 
         .lazyImage {
             position: absolute;
+            width: 100%;
             padding: .5rem;
-        }
-
-        >>> img {
-            max-height: 100%;
-            max-width: 100%;
-            user-select: none;
-            margin: 0 auto;
         }
 
         &.open {
@@ -281,6 +275,17 @@
                 position: fixed;
                 object-fit: cover;
             }
+        }
+    }
+</style>
+
+<style lang="scss">
+    .lightbox {
+        img {
+            max-height: 100%;
+            max-width: 100%;
+            user-select: none;
+            margin: 0 auto;
         }
     }
 </style>

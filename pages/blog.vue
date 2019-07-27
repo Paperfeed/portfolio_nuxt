@@ -102,16 +102,16 @@
 
 
 <style scoped lang="scss">
-    @import '../assets/prism-darcula.css';
+    @import '../assets/css/prism-darcula.css';
 
     .blog {
         margin-bottom: 3rem;
         min-width: 0;
         max-width: 768px;
     }
+
     .blog-post-list {
         margin: 3rem auto 0;
-
     }
 </style>
 

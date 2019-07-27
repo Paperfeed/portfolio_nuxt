@@ -77,3 +77,9 @@
 <style lang="scss">
     @import '../assets/css/bulma.scss';
 </style>
+
+<style scoped>
+    .logo {
+        max-height: 36px;
+    }
+</style>

@@ -15,7 +15,6 @@ export default class ScrollLock {
         const scrollbar = ScrollLock.hasScrollBar(target);
 
         if (scrollbar) {
-            console.log(scrollbar.width);
             if (scrollbar.vertical) {
                 target.style.paddingRight = `${scrollbar.width}px`
             }

@@ -1,5 +1,5 @@
 <template>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 494 344.67">
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 494 344.67">
             <polygon
                 points="151.14 87.72 74.09 318.65 23.24 318.65 129.18 26.02 172.91 26.02 279.23 318.65 228.38 318.65 151.14 87.72"/>
             <path d="M317.51,318.65,211,26h50.85L341,254.74,419.91,26h50.85L364.7,318.65Z"/>
@@ -11,7 +11,7 @@
     svg {
         min-height: 25px;
         min-width: 25px;
-        height: 100%;
+        height: auto;
 
         polygon, path {
             color: white;
