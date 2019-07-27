@@ -1,21 +1,23 @@
 <template>
-    <div class="columns is-centered">
-        <div class="column gallery__container">
-            <h1 class="title is-spaced">Gallery</h1>
-            <h2 class="subtitle">
-                <a alt="Check out my instagram" href="https://www.instagram.com/aldert.laowai/">
-                    <span class="icon">
-                        <i class="fab fa-instagram"></i>
-                    </span>
-                    aldert.laowai
-                </a>
-            </h2>
-            <photo-gallery :images="images"
-                           :pagination="12"
-                           :itemsPerRow="3"
-            />
+    <section class="section">
+        <div class="columns is-centered">
+            <div class="column gallery__container">
+                <h1 class="title is-spaced">Gallery</h1>
+                <h2 class="subtitle">
+                    <a alt="Check out my instagram" href="https://www.instagram.com/aldert.laowai/">
+                        <span class="icon">
+                            <i class="fab fa-instagram"></i>
+                        </span>
+                        aldert.laowai
+                    </a>
+                </h2>
+                <photo-gallery :images="images"
+                               :pagination="12"
+                               :itemsPerRow="3"
+                />
+            </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>

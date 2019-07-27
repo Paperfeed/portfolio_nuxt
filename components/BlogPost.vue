@@ -75,8 +75,11 @@
         @include mobile {
             margin-left: -3rem;
             margin-right: -3rem;
+            margin-bottom: 0;
 
             border-radius: 0;
+            box-shadow: none;
+            border-top: 1px solid #d8d8d8;
         }
     }
 

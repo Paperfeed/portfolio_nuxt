@@ -1,5 +1,5 @@
 <template>
-    <section class="section columns is-centered">
+    <section class="section">
         <div class="column blog">
             <h1 class="title">Ramblings of a madman</h1>
             <h2 class="subtitle">or just a boring blog, whatever</h2>
