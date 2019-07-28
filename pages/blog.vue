@@ -1,31 +1,33 @@
 <template>
     <section class="section">
-        <div class="column blog">
-            <h1 class="title">Ramblings of a madman</h1>
-            <h2 class="subtitle">or just a boring blog, whatever</h2>
+        <div class="columns is-centered">
+            <div class="column blog">
+                <h1 class="title">Ramblings of a madman</h1>
+                <h2 class="subtitle">or just a boring blog, whatever</h2>
 
-            <transition-group appear
-                              name="slide-fade"
-                              tag="div"
-                              class="blog-post-list"
-                              v-bind:css="false"
-                              @before-enter="beforeEnter"
-                              @enter="enter">
-                <blog-post v-for="(post, index) in posts"
-                           v-bind="post.fields"
-                           :data-index="index"
-                           :key="`post-${index}`"
-                           :ref="`post-${index}`"
+                <transition-group appear
+                                  name="slide-fade"
+                                  tag="div"
+                                  class="blog-post-list"
+                                  v-bind:css="false"
+                                  @before-enter="beforeEnter"
+                                  @enter="enter">
+                    <blog-post v-for="(post, index) in posts"
+                               v-bind="post.fields"
+                               :data-index="index"
+                               :key="`post-${index}`"
+                               :ref="`post-${index}`"
+                    />
+                </transition-group>
+
+                <intersection-observer :is-active="!loading && hasMoreContent"
+                                       @triggered="retrievePosts"
                 />
-            </transition-group>
 
-            <intersection-observer :is-active="!loading && hasMoreContent"
-                                   @triggered="retrievePosts"
-            />
+                <loading-spinner class="black" v-if="loading"/>
 
-            <loading-spinner class="black" v-if="loading"/>
-
-            <scroll-to-top/>
+                <scroll-to-top/>
+            </div>
         </div>
     </section>
 </template>
