@@ -49,7 +49,7 @@ export default {
         // 'nuxt-fontawesome', // https://www.npmjs.com/package/nuxt-fontawesome
         '@nuxtjs/axios', // https://axios.nuxtjs.org/usage
         '@nuxtjs/pwa',
-        '@bazzite/nuxt-optimized-images', // https://github.com/bazzite/nuxt-optimized-images
+        '@bazzite/nuxt-optimized-images', // https://github.com/bazzite/nuxt-optimized-images,
     ],
     fontawesome: {
         component: 'fa',
