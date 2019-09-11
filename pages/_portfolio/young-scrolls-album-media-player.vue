@@ -55,7 +55,7 @@
             <div id="download">
                 <h2>Download the latest young scrolls album</h2>
                 <p>Visit the <i>young scrolls</i> bandcamp page to download the latest album Zoom. Any donations to support the youth of Tamriel in their pursuit of music are welcomed with open arms.</p>
-                <a href="https://youngscrolls.bandcamp.com/album/zoom" class=>download or purchase <i>Zoom</i> now!</a>
+                <a href="https://youngscrolls.bandcamp.com/album/zoom">download or purchase <i>Zoom</i> now!</a>
             </div>
 
             <div id='donate' class='flex center'>
@@ -349,6 +349,16 @@
         text-decoration: none;
     }
 
+    p {
+        margin: 1em 0;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin: .83em 0;
+    }
+
     //
     // Custom Styling
     //
@@ -426,6 +436,7 @@
         }
 
         .logo-container {
+            box-sizing: content-box;
             margin-right: auto;
         }
 
@@ -653,6 +664,7 @@
         input[type='submit'] {
             color: white;
             background: #fea5c3;
+            font-weight: 600;
         }
     }
 
