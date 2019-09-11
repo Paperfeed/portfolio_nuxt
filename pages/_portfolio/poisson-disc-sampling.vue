@@ -221,6 +221,8 @@
 
     export default {
         name: 'poisson-disc-sampling',
+        layout: 'portfolio',
+        logoColor: 'black',
         data() {
             return {
                 selectedAlgorithm: 'Poisson Disc Sampling',

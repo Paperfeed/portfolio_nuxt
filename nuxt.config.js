@@ -28,7 +28,7 @@ export default {
         '~/assets/css/main.css',
         '@fortawesome/fontawesome-free-webfonts',
         '@fortawesome/fontawesome-free-webfonts/css/fa-brands.css',
-        // '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
+        '@fortawesome/fontawesome-free-webfonts/css/fa-regular.css',
         '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css',
     ],
     env: {
@@ -56,7 +56,7 @@ export default {
         imports: [
             {
                 set: '@fortawesome/free-solid-svg-icons',
-                icons: ['fas']
+                icons: ['fas', 'far']
             }
         ]
     },
