@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="section">
         <label>
             Current Algorithm
             <select v-model="selectedAlgorithm">
@@ -265,15 +265,23 @@
                         break;
                 }
 
-                this.drawPoints(points, this.pointSize, this.graphics);
+                this.drawPoints(points, this.pointSize, this.pixi);
             },
-            drawPoints(points, size, graphics) {
-                points.forEach(point => {
+            drawPoints(points, size, pixi) {
+                // Not rendering in several Graphics objects creates glitchy rendering
+                const graphics = new PIXI.Graphics();
+                const chunkSize = 500;
+                const chunks = new Array(Math.ceil(points.length / chunkSize)).fill(0).map(el => new PIXI.Graphics());
+
+                for (let i = 0, len = points.length; i < len; i++) {
+                    let graphics = chunks[Math.floor(i / chunkSize)];
                     graphics.lineStyle(0, 0, 0);
                     graphics.beginFill(0xFFFFFF);
-                    graphics.drawCircle(point[0], point[1], size);
+                    graphics.drawCircle(points[i][0], points[i][1], size);
                     graphics.endFill();
-                });
+                }
+
+                chunks.map(graphics => pixi.stage.addChild(graphics));
             }
         },
         mounted() {
