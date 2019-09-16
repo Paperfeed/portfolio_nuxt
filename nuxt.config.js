@@ -38,6 +38,7 @@ export default {
     ** Plugins to load before mounting the App
     */
     plugins: [
+        '~/plugins/vuera.js',
         '~/plugins/vue-lazysizes.client.js',
         './plugins/hammer.js'
     ],

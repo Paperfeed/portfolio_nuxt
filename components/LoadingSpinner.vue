@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="aspect-ratio">
-            <div class="lds-ripple">
+            <div class="lds-ripple" :class="styleClass">
                 <div></div>
                 <div></div>
             </div>
@@ -11,7 +11,10 @@
 
 <script>
     export default {
-        name: "loading-spinner"
+        name: "loading-spinner",
+        props: {
+            styleClass: String
+        }
     }
 </script>
 

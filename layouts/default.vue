@@ -1,14 +1,14 @@
 <template>
     <div>
         <nav
-            class="navbar header has-shadow is-primary"
-            role="navigation"
-            aria-label="main navigation"
+                class="navbar header has-shadow is-primary"
+                role="navigation"
+                aria-label="main navigation"
         >
             <div class="navbar-brand">
                 <a
-                    class="navbar-item"
-                    href="/"
+                        class="navbar-item"
+                        href="/"
                 >
                     <Logo/>
                 </a>
@@ -48,17 +48,18 @@
                 navHidden: true,
                 items: [
                     {
-                        title: 'About',
-                        to: { name: 'index' }
-                    },
-                    {
                         title: 'Blog',
-                        to: { name: 'blog' }
+                        to: {name: 'blog'}
                     },
                     {
                         title: 'Gallery',
-                        to: { name: 'gallery' }
+                        to: {name: 'gallery'}
                     },
+                    {
+                        title: 'Portfolio',
+                        to: 'portfolio'
+                    },
+
                 ]
             }
         },

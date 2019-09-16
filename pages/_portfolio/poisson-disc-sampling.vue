@@ -222,7 +222,13 @@
     export default {
         name: 'poisson-disc-sampling',
         layout: 'portfolio',
-        logoColor: 'black',
+        logoClass: 'black',
+        info: {
+            order: 90,
+            name: 'Poisson Disc Sampling',
+            description: 'The poisson disc sampling algorithm implemented in Pixi, with options that update in realtime',
+            thumbnail: 'poissondiscsampling.png',
+        },
         data() {
             return {
                 selectedAlgorithm: 'Poisson Disc Sampling',
@@ -278,6 +284,7 @@
             });
 
             this.graphics = new PIXI.Graphics();
+            this.pixi.renderer.backgroundColor = 0x555566;
             this.pixi.stage.addChild(this.graphics);
             stage.appendChild(this.pixi.view);
 

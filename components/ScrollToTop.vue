@@ -72,6 +72,7 @@
         border-radius: 50%;
         background: $primary;
         box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.3), 0 3px 3px 0 rgba(0, 0, 0, 0.1);
+        cursor: pointer;
     }
 
     .icon {

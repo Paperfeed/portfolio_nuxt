@@ -1,0 +1,59 @@
+<template>
+<!--    <editor/>-->
+</template>
+
+<script>
+    import MarkdownEditor from '../../components/React/MarkdownEditor';
+
+    export default {
+        name: 'markdown-editor',
+        head: {
+            link: [
+                { rel: 'script', href: 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.3.3/ace.js' },
+                { rel: 'script', href: 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.4.0/marked.min.js' },
+            ]
+        },
+        components: {
+            editor: MarkdownEditor
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    pre, code {
+        background: lightyellow;
+        margin: 20px;
+    }
+
+    table {
+        border-spacing: 1px;
+    }
+    th {
+        background: lightgrey;
+    }
+
+    td, th {
+        border: 1px solid lightgrey;
+    }
+
+    blockquote {
+        position: relative;
+        font-style: italic;
+        font-family: serif;
+
+        &:before {
+            content: '"';
+            position: absolute;
+            left: -40px;
+            font-size: 40px;
+        }
+
+        &:after {
+            content: '"';
+            position: absolute;
+            bottom: -5px;
+            right: 40px;
+            font-size: 40px;
+        }
+    }
+</style>

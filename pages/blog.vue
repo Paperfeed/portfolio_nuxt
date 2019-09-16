@@ -26,7 +26,7 @@
                                        @triggered="retrievePosts"
                 />
 
-                <loading-spinner class="black" v-if="loading"/>
+                <loading-spinner styleClass="black" v-if="loading"/>
 
                 <scroll-to-top/>
             </div>

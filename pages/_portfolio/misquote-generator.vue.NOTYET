@@ -1,0 +1,444 @@
+<template>
+    <div ref="quoteContainer" class="quote-container">
+    <div id='container' class="content">
+        <div ref='misquote' class="misquote" @click="getRandomQuote">
+            <div v-if="" class="loader">Loading...</div>
+        </div>
+    </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'misquote-generator',
+        layout: 'portfolio',
+        info: {
+            order: 1,
+            name: 'Misquote Generator',
+            description: 'A random generator that purposely misquotes famous quotes',
+            thumbnail: 'misquotegenerator.png',
+        },
+        head: {
+            link: [
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Lora|Vollkorn+SC' }
+            ]
+        },
+
+        data() {
+            return {
+                quote: false
+            }
+        },
+
+        mounted() {
+            this.quoteDiv = this.$refs.misquote;
+            this.showHelp = true;
+            this.trollQuotes = [
+                {
+                    quote: 'Hodor.',
+                    author: 'Gimli'
+                },
+                {
+                    quote: 'Use the force, Luke.',
+                    author: 'Dumbledore'
+                },
+                {
+                    quote: 'Do or do not, there is no try.',
+                    author: 'Dumbledore'
+                },
+                {
+                    quote: 'Roads? Where we\'re going we don\'t need roads.',
+                    author: 'H.G. Wells'
+                },
+                {
+                    quote: 'Stop! Hammertime.',
+                    author: 'Will Smith'
+                },
+                {
+                    quote: 'Must have the precious! They stole it from us. Sneaky little hobbitses.',
+                    author: 'Jar Jar Binks'
+                },
+                {
+                    quote: 'Goodbye, friend of Hagrid.',
+                    author: 'Shelob'
+                },
+                {
+                    quote: 'Down here, it\'s our time. It\'s our time down here.',
+                    author: 'Explorers'
+                },
+                {
+                    quote: 'England expects that every man will do his duty.',
+                    author: 'Napoleon Bonaparte'
+                },
+                {
+                    quote: 'Frankly, my dear, I don\'t give a damn.',
+                    author: 'John Wayne'
+                },
+                {
+                    quote: 'I can\'t take back the words I never said.',
+                    author: 'Lil Wayne'
+                },
+                {
+                    quote: 'Ask not what your country can do for you; ask what you can do for your country.',
+                    author: 'Adolf Hitler'
+                },
+                {
+                    quote: 'You\'re a wizard, Harry.',
+                    author: 'Gandalf'
+                },
+                {
+                    quote: 'Don\'t just get it clean, get it Oxiclean.',
+                    author: 'Vince Offer'
+                },
+                {
+                    quote: 'Hasta la vista, baby.',
+                    author: 'HAL 9000'
+                },
+                {
+                    quote: 'I am the law, and I am the judge! I am the oppressed, and there is the oppressor! Through him I have lost all that I loved, cherished and venerated - country wife, children, father and mother. I saw all perish! All that I hate is here!',
+                    author: 'Nemo'
+                },
+                {
+                    quote: 'May the Force be with you.',
+                    author: 'Dr. Who'
+                },
+                {
+                    quote: 'YOLO is just Carpe Diem for stupid people.',
+                    author: 'Ghandi'
+                },
+                {
+                    quote: 'Call me Ishmael.',
+                    author: 'Leo Tolstoy'
+                },
+                {
+                    quote: 'Check yourself before you wreck yourself.',
+                    author: 'Vanilla Ice'
+                },
+                {
+                    quote: 'I did not have sexual relations with that woman.',
+                    author: 'Barack Obama'
+                },
+                {
+                    quote: 'Love your enemies and pray for those who persecute you.',
+                    author: 'Adolf Hitler'
+                },
+                {
+                    quote: 'When Gotham is ashes, then you have my permission to die.',
+                    author: 'Robert Downey Jr.'
+                },
+                {
+                    quote: 'Skadoosh!',
+                    author: 'Tenacious D'
+                },
+                {
+                    quote: 'Find the halfling!',
+                    author: 'The Incredible Hulk'
+                },
+                {
+                    quote: 'Fuck the police!',
+                    author: 'Boy George'
+                },
+                {
+                    quote: 'Say hello to my little friend.',
+                    author: 'Bill Murray'
+                },
+                {
+                    quote: 'Sieg Heil!',
+                    author: 'Saddam Hussein'
+                },
+                {
+                    quote: 'I have a dream.',
+                    author: 'Kony'
+                },
+                {
+                    quote: 'Do a barrel roll!',
+                    author: 'Sonic the Hedgehog'
+                },
+                {
+                    quote: 'Letsa go!',
+                    author: 'Master Chief'
+                },
+                {
+                    quote: 'I didn\'t use steriods, I swear!',
+                    author: 'Billy Joe Armstrong'
+                },
+                {
+                    quote: 'With great power comes great responsibility.',
+                    author: 'Professor X'
+                },
+                {
+                    quote: 'Do you even lift?',
+                    author: 'Albert Einstein'
+                }
+            ];
+
+            this.quoteDiv.style.setProperty('width', this.quoteDiv.offsetWidth + 'px');
+            this.quoteDiv.style.setProperty('height', this.quoteDiv.offsetHeight + 'px');
+
+            this.setBackgroundColor = this.setBackgroundColor.bind(this);
+            this.getRandomQuote = this.getRandomQuote.bind(this);
+
+            this.getRandomQuote();
+
+            setInterval(this.setBackgroundColor, 10000);
+        },
+
+        methods: {
+            displayHelp() {
+                if (this.helpDiv) {
+                    if (this.showHelp) {
+                        //this.helpDiv.classList.remove('fadeInLeft');
+                        this.helpDiv.classList.add('fadeOutRight');
+                        this.showHelp = false;
+                    }
+                    return;
+                }
+
+                const help = document.createElement('div');
+                help.setAttribute('class', 'animated help');
+                help.innerHTML = 'Click on the misquote to generate a new one!';
+
+                this.$refs.quoteContainer.appendChild(help);
+                this.helpDiv = help;
+            },
+
+            async retrieveNewQuote() {
+                const quoteAPI = 'https://api.quotable.io/random';
+
+                const fetchData = async (api) => {
+                    const response = await fetch(api);
+                    return await response.json();
+                };
+
+                try {
+                    const quote1 = await fetchData(quoteAPI);
+                    const quote2 = await fetchData(quoteAPI);
+
+                    // Prevent quotes that have same author. Wouldn't be a misquote then.
+                    if (quote1.author === quote2.author) {
+                        this.retrieveNewQuote();
+                        return;
+                    }
+
+                    this.setNewQuote({ quote: quote1.content, author: quote2.author });
+                } catch (e) {
+                    this.setNewQuote = { quote: 'An error has occurred.', author: 'Misquote Generator' };
+                }
+            },
+
+            setNewQuote(quote) {
+                const html = "<div class='quote'><p class='animated fadeIn'>" + quote.quote
+                    + "</p><div class='author animated fadeInRight'>" + quote.author +"</div>";
+
+                const size = this.getContentSize(html);
+                const viewPort = document.body.clientWidth;
+
+                /*
+                if (size[0] > viewPort) {
+                  this.quoteDiv.style.setProperty('width', '0');
+                } else {
+                  this.quoteDiv.style.setProperty('width', size[0] + 'px');
+                }
+                */
+
+                this.quoteDiv.style.setProperty('width', size[0] + 'px');
+                this.quoteDiv.style.setProperty('height', size[1] + 'px');
+                this.quoteDiv.innerHTML = html;
+            },
+
+            getContentSize(text) {
+                const tag = document.createElement("div");
+                tag.setAttribute('class', 'misquote');
+                tag.style.position = "absolute";
+                tag.style.left = "-999em";
+                tag.innerHTML = text;
+
+                document.body.appendChild(tag);
+                const result = [tag.offsetWidth, tag.offsetHeight];
+
+                document.body.removeChild(tag);
+
+                return result;
+            },
+
+            getRandomQuote() {
+                this.displayHelp();
+
+                const chance = Math.floor(Math.random() * 100);
+                if (chance < 20) {
+                    const randomQuote = Math.floor(Math.random() * (this.trollQuotes.length - 1));
+                    this.setNewQuote(this.trollQuotes[randomQuote]);
+                } else {
+                    this.retrieveNewQuote();
+                }
+            },
+
+            setBackgroundColor() {
+                this.$refs.quoteContainer.style.backgroundColor = this.generateColor();
+            },
+
+            generateColor() {
+                const r = Math.floor(Math.random() * 255),
+                    g = Math.floor(Math.random() * 255),
+                    b = Math.floor(Math.random() * 255);
+
+                return `rgb(${r},${g},${b})`;
+            }
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    .quote-container {
+        height: 100vh;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: lightblue;
+        transition: background-color 20s;
+    }
+
+    .misquote {
+        position: absolute;
+        background: lightyellow;
+        border-radius: 20px;
+        top: 20%;
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 1.5em;
+        font-size: 1.5em;
+        width: fit-content;
+        max-width: 480px;
+        height: fit-content;
+        overflow: hidden;
+        transition: all 2s;
+        -webkit-transition: all .5s;
+        transition-timing-function: ease-in;
+    }
+
+    .quote {
+        margin: 0 auto 0 auto;
+        width: fit-content;
+        font-family: 'Vollkorn SC', serif;
+        font-weight: bold;
+    }
+
+    .quote p::before {
+        content: '“';
+        font-size: 1.3em;
+    }
+
+    .quote p {
+        animation-duration: 2s;
+    }
+
+    .quote p::after {
+        content: '”';
+        font-size: 1.3em;
+    }
+
+    .author::before {
+        content: '-';
+    }
+
+    .author {
+        color: grey;
+        font-style: italic;
+        font-family: 'Lora', serif;
+        font-weight: bold;
+        text-align: right;
+        margin-bottom: 1em;
+        animation-delay: .5s;
+    }
+
+    @media only screen and (max-width: 545px) {
+        .misquote {
+            max-width: fit-content;
+            min-height: fit-content;
+            border-radius: 0;
+            min-width: 0;
+        }
+    }
+
+    .loader {
+        font-size: 10px;
+        margin: 50px auto;
+        text-indent: -9999em;
+        width: 11em;
+        height: 11em;
+        border-radius: 50%;
+        background: lightblue;
+        background: -moz-linear-gradient(left, lightblue 10%, rgba(255, 255, 255, 0) 42%);
+        background: -webkit-linear-gradient(left, lightblue 10%, rgba(255, 255, 255, 0) 42%);
+        background: -o-linear-gradient(left, lightblue 10%, rgba(255, 255, 255, 0) 42%);
+        background: -ms-linear-gradient(left, lightblue 10%, rgba(255, 255, 255, 0) 42%);
+        background: linear-gradient(to right, lightblue 10%, rgba(255, 255, 255, 0) 42%);
+        position: relative;
+        -webkit-animation: load3 1.4s infinite linear;
+        animation: load3 1.4s infinite linear;
+        -webkit-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    .loader:before {
+        width: 50%;
+        height: 50%;
+        background: lightblue;
+        border-radius: 100% 0 0 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+    }
+
+    .loader:after {
+        background: lightyellow;
+        width: 75%;
+        height: 75%;
+        border-radius: 50%;
+        content: '';
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .help {
+        font-family: 'Lora', serif;
+        font-weight: bold;
+        font-size: 1.5em;
+        text-align: center;
+        color: white;
+        position: fixed;
+        top: 10%;
+        left: 25%;
+        right: 25%;
+    }
+
+    @-webkit-keyframes load3 {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes load3 {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+</style>

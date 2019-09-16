@@ -43,6 +43,12 @@
     export default {
         name: 'dvd-screen-saver',
         layout: 'portfolio',
+        info: {
+            order: 94,
+            name: 'DVD Screen Saver',
+            description: 'A 99% CSS only rendition of the DVD screen saver, emulating old school cathode ray tube television scanlines and noise',
+            thumbnail: 'dvdscreensaver.jpg',
+        },
         mounted() {
             // Javascript is only to randomize color on 'bounce',
             // not strictly necessary
