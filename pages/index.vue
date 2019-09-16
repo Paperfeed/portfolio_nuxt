@@ -18,16 +18,12 @@
         name: 'HomePage',
     }
 
-    // eslint-disable-next-line no-console
-    if (process.env.production) {
-        console.log(`%cHi there!👋
+    console.log(`%cHi there!👋
 
 I see you're taking a look backstage, hope you don't break anything!
 
-I'm for hire, by the way😉`, 'font-family: monospace; font-weight: bold; font-size: 2em; color: #5631c5');
-    } else {
-        console.log(`%cRunning in Development mode`, 'font-family: monospace; font-weight: bold; font-size: 1.5em; color: #453445');
-    }
+I'm for hire, by the way😉`,
+        'font-family: monospace; font-weight: bold; font-size: 2em; color: #5631c5');
 </script>
 
 <style>

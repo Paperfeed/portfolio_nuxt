@@ -13,7 +13,7 @@
                 </h2>
                 <photo-gallery :images="images"
                                :pagination="12"
-                               :itemsPerRow="3"
+                               :itemsPerRow="4"
                 />
             </div>
         </div>
@@ -45,5 +45,14 @@
 
     .gallery__container {
         max-width: 768px;
+    }
+</style>
+
+<style lang="scss">
+   /* TODO: Hacky - don't feel like implementing a more beautiful solution right now */
+    @media (max-width: 500px) {
+        .gallery__tab {
+            --itemsPerRow: 2 !important;
+        }
     }
 </style>
