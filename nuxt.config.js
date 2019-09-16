@@ -6,11 +6,15 @@ export default {
     ** Headers of the page
     */
     head: {
-        title: process.env.npm_package_name || '',
+        title: 'Aldert Vaandering\'s portfolio',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+            { hid: 'description',
+                name: 'description',
+                content: 'If you\'re looking for Aldert\'s website, this is the right place.' +
+                    'Web development, photography and more.'
+            }
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
