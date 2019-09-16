@@ -14,6 +14,10 @@
     transition: background-color 0.3s ease-in-out;
 }
 
+.title {
+    font-family: $family-secondary;
+}
+
 @media screen and (max-width: 463px) {
     .navbar-menu {
         display: block;

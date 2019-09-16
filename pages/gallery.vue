@@ -23,9 +23,7 @@
 <script>
     import PhotoGallery from '../components/PhotoGallery';
 
-    const importAll = (context) => {
-        return context.keys().map(context);
-    };
+    const importAll = (context) => context.keys().map(context);
     const images = importAll(require.context('~/assets/gallery/', false, /\.(png|jpe?g)$/));
 
     export default {

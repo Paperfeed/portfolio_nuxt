@@ -30,3 +30,8 @@ $link-focus-border: $primary;
 $navbar-breakpoint: 400px + (2 * $gap);
 $navbar-box-shadow-size: 0 0 6px 1px;
 $navbar-box-shadow-color: rgba(0, 0, 0, 0.15);
+
+//Font
+$font-family-sans-serif: "Open Sans", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+$family-primary: $font-family-sans-serif;
+$family-secondary: "Montserrat", #{$family-primary};

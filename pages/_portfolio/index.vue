@@ -1,8 +1,19 @@
 <template>
     <div class="container">
         <section class="section">
-            <h1 class="title">Open Source Projects</h1>
-            <h2 class="subtitle">Open sourced projects that are/were in use by thousands of people</h2>
+            <h2 class="title is-4">Customers</h2>
+            <h3 class="subtitle">Clients that I've done work for</h3>
+            <div class="customers">
+                <div class="customer__logo" v-for="customer in customerLogos">
+                    <img :src="customer" />
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section">
+            <h2 class="title is-4">Open Source Projects</h2>
+            <h3 class="subtitle">Open sourced projects that are/were in use by thousands of people</h3>
             <div class="columns">
                 <div class="column is-half-tablet" v-for="project in openSourceProjects">
                     <div class="card">
@@ -26,8 +37,8 @@
         </section>
 
         <section class="section">
-            <h1 class="title">Here be code</h1>
-            <h2 class="subtitle">A bunch of my homegrown projects, mostly written for fun</h2>
+            <h2 class="title is-4">Here be code</h2>
+            <h3 class="subtitle">A bunch of my homegrown projects, mostly written for fun</h3>
             <div class="columns">
                 <div class="column is-half-tablet" v-for="project in projects">
                     <div class="card">
@@ -55,6 +66,10 @@
 <script>
     import VueMarkdown from 'vue-markdown';
     import { startsWith } from 'lodash-es';
+
+    const importAll = (context) => context.keys().map(context);
+    const customerLogos = importAll(require.context('~/assets/portfolio/customers/', false, /\.(png|svg)$/));
+    customerLogos.sort((a, b) => a.length - Math.round(Math.random() * 2 + a.length));
 
     // Read portfolio projects in directory, and filter out the ones without any info
     // Info is set on the component itself providing a display name and thumbnail
@@ -149,7 +164,8 @@
         data() {
             return {
                 projects,
-                openSourceProjects
+                openSourceProjects,
+                customerLogos
             }
         },
         methods: {
@@ -196,6 +212,35 @@
             mix-blend-mode: color;
             background: rgb(57, 108, 153);
             transition: all .45s linear;
+        }
+    }
+
+    .customers {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 1rem;
+        background-color: #d5dbea;
+        box-shadow: 0 0 20px 6px #00000012 inset;
+    }
+
+    .customer__logo {
+        position: relative;
+        flex-basis: calc(33.3% - 2rem);
+        height: 4rem;
+        margin: 1rem;
+        padding: 1rem;
+
+        mix-blend-mode: luminosity;
+        transition: all .4s;
+
+        &:hover {
+            mix-blend-mode: normal;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     }
 </style>
