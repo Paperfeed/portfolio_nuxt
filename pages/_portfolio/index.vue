@@ -71,7 +71,7 @@
             name: 'LiuChan Chinese Popup Dictionary',
             description: 'LiuChan (liú chàng) is an extension for chrome that allows you to mouse-over Chinese to ' +
                 'instantly look it up in the dictionary.\n\n' +
-                'It currently has over 1100 users and rising.',
+                'It currently has over 1600 users and rising.',
             thumbnail: 'liuchan.png',
             url: 'https://paperfeed.github.io/LiuChan/'
         },
@@ -108,6 +108,14 @@
             description: 'The classic game of snake built purely with Javascript, HTML and CSS.',
             thumbnail: 'snake.png',
             url: 'https://codepen.io/paperfeed/pen/qVMbVV',
+        },
+
+        {
+            order: 86,
+            name: 'React Search',
+            description: 'First React app I made. Searches wikipedia.',
+            thumbnail: 'searchreact.png',
+            url: 'https://codepen.io/paperfeed/pen/eMKRpN',
         },
         {
             order: 94,
