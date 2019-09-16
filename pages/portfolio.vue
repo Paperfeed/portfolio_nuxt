@@ -18,6 +18,7 @@
                 <div class="column is-half-tablet" v-for="project in openSourceProjects">
                     <div class="card">
                         <a :href="project.url">
+                            <i class="fas fa-external-link-alt"></i>
                             <div class="card-image">
                                 <figure class="image is-16by9">
                                     <img v-if="project.thumbnail" :srcSet="project.thumbnail.srcSet"
@@ -43,6 +44,7 @@
                 <div class="column is-half-tablet" v-for="project in projects">
                     <div class="card">
                         <component v-if="project.url" :is="chooseLinkElement(project.url)" :to="project.url" :href="project.url">
+                            <i v-if="isExternalLink(project.url)" class="fas fa-external-link-alt"></i>
                             <div class="card-image">
                                 <figure class="image is-16by9">
                                     <img v-if="project.thumbnail" :srcSet="project.thumbnail.srcSet"
@@ -172,8 +174,11 @@
         methods: {
             chooseLinkElement(url) {
                 console.log(url);
-                return startsWith(url, 'http') ? 'a' : 'nuxt-link';
+                return this.isExternalLink ? 'a' : 'nuxt-link';
             },
+            isExternalLink(url) {
+                return startsWith(url, 'http')
+            }
         },
 
         components: {
@@ -199,6 +204,15 @@
         a {
             color: unset;
         }
+
+        i.fa-external-link-alt {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1;
+            color: white;
+            text-shadow: 0 1px 4px #5c6c7a;
+        }
     }
 
     .card-image figure {
@@ -223,6 +237,7 @@
         padding: 1rem;
         background-color: #d5dbea;
         box-shadow: 0 0 20px 6px #00000012 inset;
+        border-radius: .5rem;
     }
 
     .customer__logo {
