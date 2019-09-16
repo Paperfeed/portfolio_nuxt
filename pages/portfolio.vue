@@ -42,7 +42,7 @@
             <div class="columns">
                 <div class="column is-half-tablet" v-for="project in projects">
                     <div class="card">
-                        <component :is="chooseLinkElement(project.url)" :to="project.url" :href="project.url">
+                        <component v-if="project.url" :is="chooseLinkElement(project.url)" :to="project.url" :href="project.url">
                             <div class="card-image">
                                 <figure class="image is-16by9">
                                     <img v-if="project.thumbnail" :srcSet="project.thumbnail.srcSet"
@@ -73,10 +73,10 @@
 
     // Read portfolio projects in directory, and filter out the ones without any info
     // Info is set on the component itself providing a display name and thumbnail
-    const projectsModules = require.context('.', true, /\.vue$/);
+    const projectsModules = require.context('~/pages/_portfolio', true, /\.vue$/);
     let projects = projectsModules.keys().reduce((result, key) => {
         if (projectsModules(key).hasOwnProperty('default')) {
-            result.push({ ...projectsModules(key).default.info, url: projectsModules(key).default.name });
+            result.push({ ...projectsModules(key).default.info, url: 'portfolio/' + projectsModules(key).default.name });
         }
         return result;
     }, []);
@@ -161,6 +161,7 @@
     openSourceProjects.forEach(importThumbnail);
 
     export default {
+        name: 'portfolio',
         data() {
             return {
                 projects,
@@ -170,6 +171,7 @@
         },
         methods: {
             chooseLinkElement(url) {
+                console.log(url);
                 return startsWith(url, 'http') ? 'a' : 'nuxt-link';
             },
         },
@@ -188,7 +190,7 @@
     .card {
         height: 100%;
 
-        &:hover {
+        &:hover, &:active {
             .card-image figure::after {
                 background: rgba(57, 108, 153, 0);
             }
@@ -233,7 +235,7 @@
         mix-blend-mode: luminosity;
         transition: all .4s;
 
-        &:hover {
+        &:hover, &:active {
             mix-blend-mode: normal;
         }
 

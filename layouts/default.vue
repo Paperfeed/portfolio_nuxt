@@ -49,17 +49,16 @@
                 items: [
                     {
                         title: 'Blog',
-                        to: {name: 'blog'}
+                        to: { name: 'blog' }
                     },
                     {
                         title: 'Gallery',
-                        to: {name: 'gallery'}
+                        to: { name: 'gallery' }
                     },
                     {
                         title: 'Portfolio',
-                        to: 'portfolio'
+                        to: { name: 'portfolio' }
                     },
-
                 ]
             }
         },
