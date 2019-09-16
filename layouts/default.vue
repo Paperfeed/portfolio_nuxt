@@ -21,7 +21,6 @@
 
             <div class="navbar-menu" :class="{'is-active': !navHidden}">
                 <div class="navbar-end">
-
                     <nuxt-link class="navbar-item"
                                v-for="(item, key) of items"
                                :key="`nav-item-${key}`"
@@ -31,6 +30,7 @@
                     >
                         {{ item.title }}
                     </nuxt-link>
+                    <a class="navbar-item" href="https://resume.aldertvaandering.com">Resume</a>
                 </div>
             </div>
         </nav>
