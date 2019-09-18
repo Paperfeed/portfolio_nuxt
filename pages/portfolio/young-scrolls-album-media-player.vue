@@ -303,15 +303,17 @@
                 const rows = this.$refs.trackList.rows;
                 let totalPlayTime = 0;
                 for (let i = 0, len = rows.length; i < len; i++) {
-                    const trackLengthString = rows[i].childNodes[2].innerHTML;
+                    const trackLengthString = rows[i].children[2].innerHTML;
                     const trackLength = this.parseSeekTime(trackLengthString);
-                    const trackName = rows[i].childNodes[1].innerHTML;
+                    const trackName = rows[i].children[1].innerHTML;
+
                     this.tracks.push({
                         length: trackLengthString,
                         lengthInSeconds: trackLength,
                         trackStart: totalPlayTime,
                         name: trackName
                     });
+
                     totalPlayTime += trackLength;
                     rows[i].onclick = () => this.seekToTrack(i);
                 }
