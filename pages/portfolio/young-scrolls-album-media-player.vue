@@ -421,7 +421,7 @@
     //
     // Variables / Imports
     //
-    $grey: #2d2d2d;
+    $grey: #2a292a; //#2d2d2d;
     $pink: #fea5c3;
     $yellow: #fee77f;
 
