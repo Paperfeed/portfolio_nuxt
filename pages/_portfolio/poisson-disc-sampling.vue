@@ -1,39 +1,41 @@
 <template>
     <div class="section">
-        <label>
-            Current Algorithm
-            <select v-model="selectedAlgorithm">
-                <option>Randomized</option>
-                <option>Poisson Disc Sampling</option>
-            </select>
-        </label>
-        <button @click="rerunAlgorithm">Rerun</button>
+        <div class="settings is-flex-wrap">
+            <label class="is-flex-grow">
+                Current Algorithm
+                <select v-model="selectedAlgorithm">
+                    <option>Randomized</option>
+                    <option>Poisson Disc Sampling</option>
+                </select>
+            </label>
+            <button @click="rerunAlgorithm">Rerun</button>
 
-        <label>
-            Point size
-            <input @input="rerunAlgorithm" type="range" v-model="pointSize" min="0.1" max="50" step="0.1"/>
-            {{pointSize}}
-        </label>
+            <label class="is-flex-100">
+                Point size
+                <input @input="rerunAlgorithm" type="range" v-model="pointSize" min="0.1" max="20" step="0.1"/>
+                {{pointSize}}
+            </label>
 
-        <div v-show="selectedAlgorithm === 'Poisson Disc Sampling'">
-            <label>
-                <input @change="rerunAlgorithm" type="checkbox" v-model="showGrid"/>
-                Show Grid
-            </label>
-            <label>
-                <input @change="rerunAlgorithm" type="checkbox" v-model="showSamples"/>
-                Show Samples
-            </label>
-            <label>
-                Minimum Distance
-                <input @input="rerunAlgorithm" type="range" v-model="minimumDistance" min="1" max="100"/>
-                {{minimumDistance}}
-            </label>
-            <label>
-                Tries Before Rejection
-                <input @input="rerunAlgorithm" type="range" v-model="triesBeforeRejection" min="1" max="500"/>
-                {{triesBeforeRejection}}
-            </label>
+            <div  class="is-flex-wrap is-flex-100" v-show="selectedAlgorithm === 'Poisson Disc Sampling'">
+                <label>
+                    <input @change="rerunAlgorithm" type="checkbox" v-model="showGrid"/>
+                    Show Grid
+                </label>
+                <label>
+                    <input @change="rerunAlgorithm" type="checkbox" v-model="showSamples"/>
+                    Show Samples
+                </label>
+                <label class="is-flex-100">
+                    Minimum Distance
+                    <input @input="rerunAlgorithm" type="range" v-model="minimumDistance" min="1" max="100"/>
+                    {{minimumDistance}}
+                </label>
+                <label class="is-flex-100">
+                    Tries Before Rejection
+                    <input @input="rerunAlgorithm" type="range" v-model="triesBeforeRejection" min="1" max="100"/>
+                    {{triesBeforeRejection}}
+                </label>
+            </div>
         </div>
         <div class="stage" ref="stage">
         </div>
@@ -261,7 +263,10 @@
                         points = GenerateRandomizedPoints(width * height / 100, { width, height });
                         break;
                     case 'Poisson Disc Sampling':
-                        points = GenerateSampledPoints(this.minimumDistance, { width, height }, this.triesBeforeRejection, this.pixi, this.showGrid, this.showSamples);
+                        points = GenerateSampledPoints(this.minimumDistance, {
+                            width,
+                            height
+                        }, this.triesBeforeRejection, this.pixi, this.showGrid, this.showSamples);
                         break;
                 }
 
@@ -303,6 +308,41 @@
 </script>
 
 <style scoped lang="scss">
+    .settings {
+        background: aliceblue;
+        padding: 1rem;
+        border-radius: .5rem;
+        margin-bottom: 2rem;
+
+        label {
+            display: flex;
+            align-items: center;
+            align-content: space-between;
+
+            input[type='range'] {
+                flex-basis: 400px;
+                margin: 0 1rem;
+            }
+        }
+    }
+
+    .is-flex-wrap {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .is-flex-grow {
+        flex-grow: 1;
+    }
+
+    .is-flex-100 {
+        flex-basis: 100%;
+    }
+
+    .is-flex-50 {
+        flex-basis: 50%;
+    }
+
     .stage {
         width: 100%;
         height: 60vh;
