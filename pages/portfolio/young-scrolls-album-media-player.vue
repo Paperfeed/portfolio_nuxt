@@ -515,8 +515,7 @@
         }
 
         #logo {
-            height: 50px;
-            padding: 5px;
+            height: 100%;
         }
 
         .logo-container {
@@ -536,6 +535,7 @@
                 color: white;
                 padding: 0 10px;
                 font-size: 1.8em;
+                white-space: nowrap;
             }
         }
     }
@@ -800,7 +800,7 @@
             }
 
             .logo {
-                padding: 0;
+                padding: 5px;
                 margin: auto;
             }
 

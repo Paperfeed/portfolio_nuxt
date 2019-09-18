@@ -30,7 +30,7 @@
                             style: r.components.default.options.logoStyle,
                             source: r.components.default.options.source ?
                                 r.components.default.options.source :
-                                `${rawGithubSource}pages/_portfolio/${r.components.default.options.name}.vue`,
+                                `${rawGithubSource}pages/portfolio/${r.components.default.options.name}.vue`,
                         }
                     }
                 })[0]

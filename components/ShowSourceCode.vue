@@ -91,7 +91,7 @@
         bottom: 0;
         right: 0;
 
-        min-width: 500px;
+        min-width: 50vw;
         max-width: calc(100vw - 3rem);
         background-color: white;
         transition: all .4s ease-in-out;
