@@ -75,7 +75,7 @@
 
     // Read portfolio projects in directory, and filter out the ones without any info
     // Info is set on the component itself providing a display name and thumbnail
-    const projectsModules = require.context('~/pages/_portfolio', true, /\.vue$/);
+    const projectsModules = require.context('~/pages/portfolio', true, /\.vue$/);
     let projects = projectsModules.keys().reduce((result, key) => {
         if (projectsModules(key).hasOwnProperty('default')) {
             result.push({ ...projectsModules(key).default.info, url: 'portfolio/' + projectsModules(key).default.name });
@@ -173,7 +173,6 @@
         },
         methods: {
             chooseLinkElement(url) {
-                console.log(url);
                 return this.isExternalLink ? 'a' : 'nuxt-link';
             },
             isExternalLink(url) {

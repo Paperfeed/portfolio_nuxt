@@ -211,7 +211,6 @@ class Controls extends Component {
     }
 
     toggleView() {
-        console.log('test', this.view)
         this.view = !this.view;
         this.props.updateState({ view: this.view })
     }
