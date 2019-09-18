@@ -78,7 +78,7 @@
     const projectsModules = require.context('~/pages/portfolio', true, /\.vue$/);
     let projects = projectsModules.keys().reduce((result, key) => {
         if (projectsModules(key).hasOwnProperty('default')) {
-            result.push({ ...projectsModules(key).default.info, url: 'portfolio/' + projectsModules(key).default.name });
+            result.push({ ...projectsModules(key).default.info, url: '/portfolio/' + projectsModules(key).default.name });
         }
         return result;
     }, []);
