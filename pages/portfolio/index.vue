@@ -14,60 +14,20 @@
         <section class="section">
             <h2 class="title is-4">Open Source Projects</h2>
             <h3 class="subtitle">Open sourced projects that are/were in use by thousands of people</h3>
-            <div class="columns">
-                <div class="column is-half-tablet" v-for="project in openSourceProjects">
-                    <div class="card">
-                        <a :href="project.url">
-                            <i class="fas fa-external-link-alt"></i>
-                            <div class="card-image">
-                                <figure class="image is-16by9">
-                                    <img v-if="project.thumbnail" :srcSet="project.thumbnail.srcSet"
-                                         :alt="project.name">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-5">{{project.name}}</p>
-                                <p class="content">
-                                    <vue-markdown :source="project.description"/>
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <project-card-list :projects="openSourceProjects"/>
         </section>
 
         <section class="section">
             <h2 class="title is-4">Here be code</h2>
             <h3 class="subtitle">A bunch of my homegrown projects, mostly written for fun</h3>
-            <div class="columns">
-                <div class="column is-half-tablet" v-for="project in projects">
-                    <div class="card">
-                        <component v-if="project.url" :is="chooseLinkElement(project.url)" :to="project.url" :href="project.url">
-                            <i v-if="isExternalLink(project.url)" class="fas fa-external-link-alt"></i>
-                            <div class="card-image">
-                                <figure class="image is-16by9">
-                                    <img v-if="project.thumbnail" :srcSet="project.thumbnail.srcSet"
-                                         :alt="project.name">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-5">{{project.name}}</p>
-                                <p class="content">
-                                    <vue-markdown :source="project.description"/>
-                                </p>
-                            </div>
-                        </component>
-                    </div>
-                </div>
-            </div>
+            <project-card-list :projects="projects"/>
         </section>
     </div>
 </template>
 
 <script>
-    import VueMarkdown from 'vue-markdown';
-    import { startsWith } from 'lodash-es';
+    import ProjectCardList from '../../components/ProjectCardList';
+    import Card from '../../components/Card';
 
     const importAll = (context) => context.keys().map(context);
     const customerLogos = importAll(require.context('~/assets/portfolio/customers/', false, /\.(png|svg)$/));
@@ -89,14 +49,23 @@
             description: 'LiuChan (liú chàng) is an extension for chrome that allows you to mouse-over Chinese to ' +
                 'instantly look it up in the dictionary.\n\n' +
                 'It currently has over 1600 users and rising.',
+            tags: ['Typescript', 'Chrome'],
             thumbnail: 'liuchan.png',
             url: 'https://paperfeed.github.io/LiuChan/'
         },
         {
             name: 'NextGen NivoSlider',
             description: 'A wordpress plugin that allows you to integrate a nivoslider with Nextgen Gallery.',
+            tags: ['Wordpress', 'PHP'],
             thumbnail: 'nextgennivoslider.png',
             url: 'https://wordpress.org/plugins/nextgen-nivoslider/',
+        },
+        {
+            name: 'Paperbot',
+            description: 'A discord bot that tracks users\'s games and allows them easily organize groups of people that all own the same game, to play together.',
+            tags: ['Typescript', 'GraphQL', 'TypeORM', 'Node.js'],
+            thumbnail: '',
+            url: 'https://github.com/paperfeed/paperbot',
         }
     ];
 
@@ -131,6 +100,7 @@
             order: 86,
             name: 'React Search',
             description: 'First React app I made. Searches wikipedia.',
+            tags: ['React'],
             thumbnail: 'searchreact.png',
             url: 'https://codepen.io/paperfeed/pen/eMKRpN',
         },
@@ -139,6 +109,7 @@
             name: 'Markdown Editor',
             description: 'A markdown editor with instant preview built with React.\n\n' +
                 'Powered by `marked.js` and `ACE`.',
+            tags: ['React'],
             thumbnail: 'markdowneditor.png',
             url: 'https://codepen.io/paperfeed/pen/yqjrPE',
         },
@@ -148,6 +119,7 @@
             description: 'A proof of concept I coded up in a day to show the benefit of `GraphQL` in combination with ' +
                 'a mocking framework to my team.\n\n ' +
                 'Backend hosted on _glitch.me_ - might take a moment to boot up.',
+            tags: ['Vue', 'GraphQL', 'Node.js'],
             thumbnail: 'aboutblank.png',
             url: 'https://aboutblank.aldertvaandering.com',
         },
@@ -171,17 +143,10 @@
                 customerLogos
             }
         },
-        methods: {
-            chooseLinkElement(url) {
-                return this.isExternalLink ? 'a' : 'nuxt-link';
-            },
-            isExternalLink(url) {
-                return startsWith(url, 'http')
-            }
-        },
 
         components: {
-            'vue-markdown': VueMarkdown
+            Card,
+            ProjectCardList,
         }
     }
 </script>
@@ -189,45 +154,6 @@
 <style scoped lang="scss">
     .columns {
         flex-wrap: wrap;
-    }
-
-    .card {
-        height: 100%;
-
-        &:hover, &:active {
-            .card-image figure::after {
-                background: rgba(57, 108, 153, 0);
-            }
-        }
-
-        a {
-            color: unset;
-        }
-
-        i.fa-external-link-alt {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 1;
-            color: white;
-            text-shadow: 0 1px 4px #5c6c7a;
-        }
-    }
-
-    .card-image figure {
-        position: relative;
-
-        &::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            mix-blend-mode: color;
-            background: rgb(57, 108, 153);
-            transition: all .45s linear;
-        }
     }
 
     .customers {

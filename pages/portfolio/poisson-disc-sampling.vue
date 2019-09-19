@@ -229,6 +229,7 @@
             order: 90,
             name: 'Poisson Disc Sampling',
             description: 'The poisson disc sampling algorithm implemented in Pixi, with options that update in realtime',
+            tags: ['PixiJS', 'Vue'],
             thumbnail: 'poissondiscsampling.png',
         },
         data() {
