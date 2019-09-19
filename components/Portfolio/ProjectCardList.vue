@@ -31,7 +31,7 @@
 <script>
     import VueMarkdown from 'vue-markdown';
     import { startsWith } from 'lodash-es';
-    import SvgPattern from './SvgPattern';
+    import SvgPattern from '../SvgPattern';
 
     export default {
         name: 'ProjectCardList',

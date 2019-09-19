@@ -17,6 +17,7 @@
             <project-card-list :projects="openSourceProjects"/>
         </section>
 
+
         <section class="section">
             <h2 class="title is-4">Here be code</h2>
             <h3 class="subtitle">A bunch of my homegrown projects, mostly written for fun</h3>
@@ -26,8 +27,8 @@
 </template>
 
 <script>
-    import ProjectCardList from '../../components/ProjectCardList';
-    import Card from '../../components/Card';
+    import ProjectCardList from '~/components/Portfolio/ProjectCardList';
+    import Card from '~/components/Card';
 
     const importAll = (context) => context.keys().map(context);
     const customerLogos = importAll(require.context('~/assets/portfolio/customers/', false, /\.(png|svg)$/));
