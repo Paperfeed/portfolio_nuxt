@@ -1,6 +1,6 @@
 <template>
     <div class="blog-post">
-        <h2 class="title is-3"><a :href="slug">{{title}}</a></h2>
+        <h2 class="title is-3"><nuxt-link :to="'/blog/' + slug">{{title}}</nuxt-link></h2>
         <h3 class="subtitle is-6">Posted on {{ date }}</h3>
 
         <hr>
@@ -8,8 +8,15 @@
             <img :src="header.url" :alt="header.title" />
         </div>
 
-        <div class="blog-post-content">
-            <vue-markdown>{{post}}</vue-markdown>
+        <div class="blog-post-content content" :class="shorten ? 'shortened' : ''">
+            <vue-markdown>{{shorten ? post.slice(0, post.indexOf(' ', shorten)) + ' ...' : post}}</vue-markdown>
+        </div>
+
+        <div class="buttons is-centered" v-if="shorten">
+            <nuxt-link :to="'/blog/' + slug"
+                       class="button is-text">
+                read more...
+            </nuxt-link>
         </div>
     </div>
 </template>
@@ -34,7 +41,8 @@
                 }
             },
             post: String,
-            images: Object
+            images: Object,
+            shorten: String
         },
         computed: {
             dateAsString() {
@@ -84,6 +92,7 @@
     }
 
     .blog-post-content {
+        position: relative;
         min-width: 0;
 
         p {
@@ -123,10 +132,24 @@
                 margin: .5rem 0;
             }
         }
+
+        &.shortened {
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 3.5rem;
+
+                opacity: 0.8;
+                background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            }
+        }
     }
 
     .blog-post-media {
         float: left;
-        margin: .5em .5em .5em 0;
+        margin: .5rem 1rem .5rem 0;
     }
 </style>
