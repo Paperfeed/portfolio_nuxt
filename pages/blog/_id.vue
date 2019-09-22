@@ -2,9 +2,6 @@
     <section class="section">
         <div class="columns is-centered">
             <div class="column blog">
-                <h1 class="title">Ramblings of a madman</h1>
-                <h2 class="subtitle">or just a boring blog, whatever</h2>
-
                 <transition-group v-if="!error"
                                   appear
                                   name="slide-fade"
@@ -13,20 +10,14 @@
                                   v-bind:css="false"
                                   @before-enter="beforeEnter"
                                   @enter="enter">
-                    <blog-post v-for="(post, index) in posts"
-                               v-bind="post.fields"
-                               :data-index="index"
-                               :key="`post-${index}`"
-                               :ref="`post-${index}`"
+                    <blog-post v-if="post"
+                               v-bind="post"
+                               key="blog-post"
                     />
                 </transition-group>
                 <message v-else :message="error" type="error"/>
 
-                <intersection-observer :is-active="!loading && hasMoreContent"
-                                       @triggered="retrievePosts"
-                />
-
-                <loading-spinner styleClass="black" v-if="loading"/>
+                <loading-spinner styleClass="black" v-if="!post"/>
 
                 <scroll-to-top/>
             </div>
@@ -35,89 +26,79 @@
 </template>
 
 <script>
-    import { createClient } from '../plugins/contentful';
+    import { createClient } from '~/plugins/contentful';
     import { TweenLite } from 'gsap';
-    import LoadingSpinner from '../components/LoadingSpinner';
-    import BlogPost from '../components/BlogPost';
-    import IntersectionObserver from '../components/IntersectionObserver';
-    import ScrollToTop from '../components/ScrollToTop';
+    import LoadingSpinner from '~/components/LoadingSpinner';
+    import BlogPost from '~/components/BlogPost';
+    import ScrollToTop from '~/components/ScrollToTop';
     import Prism from 'prismjs';
-    import Message from '../components/Message';
+    import Message from '~/components/Message';
 
     const client = createClient();
 
     export default {
-        name: 'Blog',
+        name: 'blog-slug',
         components: {
             Message,
             ScrollToTop,
-            IntersectionObserver,
             BlogPost,
             LoadingSpinner,
         },
+
         data() {
             return {
                 error: false,
-                loading: true,
-                posts: []
+                post: null
             }
         },
-        created() {
-            this.skip = 0;
-            this.hasMoreContent = false;
-        },
+
         mounted() {
-            this.retrievePosts();
+            this.slug = this.$route.params.id;
+            this.retrievePost();
         },
+
         updated() {
             Prism.highlightAll();
         },
+
         methods: {
-            async retrievePosts() {
-                this.loading = true;
-                let posts;
+            async retrievePost() {
+                let post;
 
                 try {
-                    posts = await client.getEntries({
+                    post = await client.getEntries({
                         'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
-                        skip: this.skip,
-                        limit: 2,
-                        order: '-sys.createdAt'
+                        'fields.slug[in]': this.slug
                     });
                 } catch(e) {
                     this.error = 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.';
-                    this.loading = false;
                     return false;
                 }
 
-                if (posts) {
-                    posts.items.forEach(item => this.posts.push(item));
-
-                    this.skip += 2;
-                    this.hasMoreContent = this.skip < posts.total;
-                    this.loading = false;
+                if (post) {
+                    this.post = post.items[0].fields;
                 }
             },
+
             beforeEnter(el) {
                 el.style.opacity = 0;
                 el.style.top = '100px';
             },
+
             enter(el, done) {
-                const delay = (el.dataset.index - this.skip * 100) + 300; // + 300 is page transition delay
                 setTimeout(() => {
                     TweenLite.to(el, 0.4, {
                         opacity: 1,
                         top: 0
                     })
-                }, delay)
+                })
             },
-        }
+        },
     }
 </script>
 
-
 <style scoped lang="scss">
-    @import '../assets/css/prism-darcula.css';
+    @import '../../assets/css/prism-darcula.css';
 
     .blog {
         margin-bottom: 3rem;
@@ -129,5 +110,3 @@
         margin: 3rem auto 0;
     }
 </style>
-
-
