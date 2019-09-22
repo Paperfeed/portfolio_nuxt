@@ -97,7 +97,7 @@
 
         mounted() {
             if (this.isUsingInternetExplorer) {
-                alert('Your browser is not supported and should really be updated, ' +
+                alert('Your browser is not supported and should really be updated or replaced, ' +
                     'for a safer and better web');
             }
         },
