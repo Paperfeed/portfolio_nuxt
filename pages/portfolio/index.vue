@@ -70,7 +70,7 @@
         },
         {
             name: 'Xiaomi Gamepad x360input Service',
-            description: 'A windows service running in the background that maps the Xiaomi Gamepad directinput to x360input and hides the original HID to make the gamepad compatible with pretty much all modern games.',
+            description: 'A windows service that maps the Xiaomi Gamepad DirectInput to XInput and hides the original HID, to make the gamepad compatible with pretty much all modern games.',
             tags: ['C#', 'Driver', 'Windows Service'],
             thumbnail: '',
             url: 'https://github.com/paperfeed/Xiaomi_gamepad',
