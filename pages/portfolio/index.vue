@@ -13,7 +13,7 @@
 
         <section class="section">
             <h2 class="title is-4">Open Source Projects</h2>
-            <h3 class="subtitle">Open sourced projects that are/were in use by thousands of people</h3>
+            <h3 class="subtitle">Projects that are/were in use by thousands of people</h3>
             <project-card-list :projects="openSourceProjects"/>
         </section>
 
@@ -67,7 +67,15 @@
             tags: ['Typescript', 'GraphQL', 'TypeORM', 'Node.js'],
             thumbnail: '',
             url: 'https://github.com/paperfeed/paperbot',
-        }
+        },
+        {
+            name: 'Xiaomi Gamepad x360input Service',
+            description: 'A windows service running in the background that maps the Xiaomi Gamepad directinput to x360input and hides the original HID to make the gamepad compatible with pretty much all modern games.',
+            tags: ['C#', 'Driver', 'Windows Service'],
+            thumbnail: '',
+            url: 'https://github.com/paperfeed/Xiaomi_gamepad',
+        },
+
     ];
 
     const externalProjects = [
