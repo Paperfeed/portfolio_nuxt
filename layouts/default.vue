@@ -62,6 +62,7 @@
                 ]
             }
         },
+
         methods: {
             closeNav() {
                 this.navHidden = true;
@@ -70,6 +71,37 @@
                 this.navHidden = !this.navHidden;
             }
         },
+
+        computed: {
+            isUsingInternetExplorer() {
+                const userAgent = window.navigator.userAgent;
+                const testForIE = /(MSIE|Trident|Edge).+?([\d.]+)\b/.exec(userAgent);
+
+                // If user is using IE it will return an array
+                // [1] is the browser
+                // [2] is version number
+
+                // MSIE = Internet Explorer 10 <=
+                // Trident = Internet Explorer 11
+                // Edge = Edge
+
+                if (testForIE) {
+                    switch (testForIE[1]) {
+                        case 'MSIE':
+                        case 'Trident':
+                            alert('Your browser is not supported and should really be updated, ' +
+                                'for a safer and better web')
+                    }
+                }
+            }
+        },
+
+        mounted() {
+            if (this.isUsingInternetExplorer) {
+                console.log('blep')
+            }
+        },
+
         components: {
             Logo
         },
