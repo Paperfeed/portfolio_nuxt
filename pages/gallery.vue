@@ -4,7 +4,7 @@
             <div class="column gallery__container">
                 <h1 class="title is-spaced">Gallery</h1>
                 <h2 class="subtitle">
-                    <a alt="Check out my instagram" href="https://www.instagram.com/aldert.laowai/">
+                    <a href="https://www.instagram.com/aldert.laowai/">
                         <span class="icon">
                             <i class="fab fa-instagram"></i>
                         </span>
@@ -13,7 +13,7 @@
                 </h2>
                 <photo-gallery :images="images"
                                :pagination="12"
-                               :itemsPerRow="4"
+                               :itemsPerRow="3"
                 />
             </div>
         </div>
@@ -25,6 +25,7 @@
 
     const importAll = (context) => context.keys().map(context);
     const images = importAll(require.context('~/assets/gallery/', false, /\.(png|jpe?g)$/));
+
 
     export default {
         components: { PhotoGallery },
@@ -47,7 +48,7 @@
 </style>
 
 <style lang="scss">
-   /* TODO: Hacky - don't feel like implementing a more beautiful solution right now */
+    /* TODO: Hacky - don't feel like implementing a more beautiful solution right now */
     @media (max-width: 500px) {
         .gallery__tab {
             --itemsPerRow: 2 !important;

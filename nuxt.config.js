@@ -90,9 +90,9 @@ export default {
             quality: 85
         },
         responsive: {
+            adapter: require('responsive-loader/sharp'),
             placeholder: true,
-            sizes: [300, 600, 1200, 2000],
-            adapter: require('responsive-loader/sharp')
+            sizes: [300, 600, 1200, 2000]
         },
         defaultImageLoader: 'responsive-loader',
     },
@@ -105,6 +105,9 @@ export default {
     ** Build configuration
     */
     build: {
+        cache: true,
+        hardSource: true,
+        parallel: true,
         extend (config, { isDev, isClient, loaders: { vue } }) {
             if (isDev) {
                 if (isClient) {

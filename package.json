@@ -40,6 +40,7 @@
     "victor": "^1.1.0",
     "vue-class-component": "^7.1.0",
     "vue-markdown": "^2.2.4",
+    "vue-styled-components": "^1.4.9",
     "vuera": "^0.2.5"
   },
   "devDependencies": {
