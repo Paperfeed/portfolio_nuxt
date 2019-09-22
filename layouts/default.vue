@@ -89,8 +89,7 @@
                     switch (testForIE[1]) {
                         case 'MSIE':
                         case 'Trident':
-                            alert('Your browser is not supported and should really be updated, ' +
-                                'for a safer and better web')
+                            return true;
                     }
                 }
             }
@@ -98,7 +97,8 @@
 
         mounted() {
             if (this.isUsingInternetExplorer) {
-                console.log('blep')
+                alert('Your browser is not supported and should really be updated, ' +
+                    'for a safer and better web');
             }
         },
 
