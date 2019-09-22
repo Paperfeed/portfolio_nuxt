@@ -56,7 +56,7 @@
         },
 
         mounted() {
-            setTimeout(this.simulateTypingName, 300);
+            setTimeout(this.simulateTypingName, 650);
         }
     }
 
