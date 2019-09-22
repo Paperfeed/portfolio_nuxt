@@ -10,7 +10,8 @@ export default {
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description',
+            {
+                hid: 'description',
                 name: 'description',
                 content: 'If you\'re looking for Aldert\'s website, this is the right place.' +
                     'Web development, photography and more.'
@@ -18,7 +19,7 @@ export default {
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat|Open+Sans&display=swap'},
+            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat|Open+Sans&display=swap' },
         ]
     },
     /*
@@ -104,11 +105,14 @@ export default {
     /*
     ** Build configuration
     */
+    generate: {
+        subFolders: false
+    },
     build: {
         cache: true,
-        hardSource: true,
+        // hardSource: true,
         parallel: true,
-        extend (config, { isDev, isClient, loaders: { vue } }) {
+        extend(config, { isDev, isClient, loaders: { vue } }) {
             if (isDev) {
                 if (isClient) {
                     config.devtool = 'eval-source-map';
