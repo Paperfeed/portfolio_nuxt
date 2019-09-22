@@ -2,6 +2,14 @@
     <section class="section">
         <div class="columns is-centered">
             <div class="column blog">
+                <div class="blog-back-button">
+                    <!--
+                    TODO: Should look into checking if there is previous history in the router
+                            and calling $router.back() instead
+                    -->
+                    <nuxt-link :to="{name: 'blog'}"><i class="fa fa-arrow-left"></i> Back to blog</nuxt-link>
+                </div>
+
                 <transition-group v-if="!error"
                                   appear
                                   name="slide-fade"
@@ -52,9 +60,22 @@
             }
         },
 
-        mounted() {
-            this.slug = this.$route.params.id;
-            this.retrievePost();
+        async asyncData({ env, params }) {
+            let post;
+            try {
+                post = await client.getEntries({
+                    'content_type': env.CTF_BLOG_POST_TYPE_ID,
+                    'fields.slug[in]': params.id
+                });
+            } catch (e) {
+                return {
+                    error: 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.'
+                }
+            }
+
+            return {
+                post: post.items[0].fields,
+            }
         },
 
         updated() {
@@ -62,30 +83,12 @@
         },
 
         methods: {
-            async retrievePost() {
-                let post;
-
-                try {
-                    post = await client.getEntries({
-                        'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
-                        'fields.slug[in]': this.slug
-                    });
-                } catch(e) {
-                    this.error = 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.';
-                    return false;
-                }
-
-                if (post) {
-                    this.post = post.items[0].fields;
-                }
-            },
-
             beforeEnter(el) {
                 el.style.opacity = 0;
                 el.style.top = '100px';
             },
 
-            enter(el, done) {
+            enter(el) {
                 setTimeout(() => {
                     TweenLite.to(el, 0.4, {
                         opacity: 1,
@@ -108,5 +111,9 @@
 
     .blog-post-list {
         margin: 3rem auto 0;
+    }
+
+    .blog-back-button {
+        font-size: 1.5em;
     }
 </style>

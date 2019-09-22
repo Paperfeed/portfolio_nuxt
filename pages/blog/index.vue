@@ -2,13 +2,8 @@
     <section class="section">
         <div class="columns is-centered">
             <div class="column blog">
-                <div v-if="!id">
-                    <h1 class="title">Ramblings of a madman</h1>
-                    <h2 class="subtitle">or just a boring blog, whatever</h2>
-                </div>
-                <div v-else>
-                    <nuxt-link :to="{name: 'blog'}"><i class="fa fa-arrow-left"></i> Go back</nuxt-link>
-                </div>
+                <h1 class="title">Ramblings of a madman</h1>
+                <h2 class="subtitle">or just a boring blog, whatever</h2>
 
                 <transition-group v-if="!error"
                                   appear
@@ -18,18 +13,18 @@
                                   v-bind:css="false"
                                   @before-enter="beforeEnter"
                                   @enter="enter">
-                    <blog-post v-if="posts.length"
-                               v-for="(post, index) in posts"
+                    <blog-post v-for="(post, index) in posts"
                                v-bind="post.fields"
                                :data-index="index"
                                :key="`post-${index}`"
                                :ref="`post-${index}`"
+                               shorten="1000"
                     />
                 </transition-group>
                 <message v-else :message="error" type="error"/>
 
                 <intersection-observer :is-active="!loading && hasMoreContent"
-                                       @triggered="retrieveAllPosts"
+                                       @triggered="retrievePosts"
                 />
 
                 <loading-spinner styleClass="black" v-if="loading"/>
@@ -66,28 +61,22 @@
             return {
                 error: false,
                 loading: true,
-                posts: []
             }
         },
 
-        created() {
-            this.skip = 0;
-            this.id = null;
-            this.hasMoreContent = false;
+        computed: {
+            posts() {
+                return this.$store.state.blogPosts.posts;
+            }
         },
 
         mounted() {
-            this.id = this.$route.params.id;
-            this.updatePosts()
+            this.retrievePosts();
         },
 
-        watch: {
-            '$route' (to) {
-                if (to.params.id !== this.id) {
-                    this.id = to.params.id;
-                    this.updatePosts();
-                }
-            }
+        created() {
+            this.id = null;
+            this.hasMoreContent = false;
         },
 
         updated() {
@@ -95,50 +84,27 @@
         },
 
         methods: {
-            updatePosts() {
-                if (this.id) {
-                    this.retrievePost(this.id);
-                } else {
-                    this.retrieveAllPosts();
-                }
-            },
-
-            async retrievePost(slug) {
-                const post = await this.retrieveData({
-                    'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
-                    'fields.slug[in]': slug
-                });
-
-                if (post) {
-                    this.posts = post.items;
-                }
-            },
-
-            async retrieveAllPosts() {
-                const posts = await this.retrieveData({
-                    'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
-                    skip: this.skip,
-                    limit: 2,
-                    order: '-sys.createdAt'
-                });
-
-                if (posts) {
-                    posts.items.forEach(item => this.posts.push(item));
-                    this.skip += 2;
-                    this.hasMoreContent = this.skip < posts.total;
-                }
-            },
-
-            async retrieveData(options) {
+            async retrievePosts() {
+                let posts;
                 this.loading = true;
+
                 try {
-                    const data = await client.getEntries(options);
-                    this.loading = false;
-                    return data;
-                } catch(e) {
-                    this.loading = false;
-                    this.error = 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.';
+                    posts = await client.getEntries({
+                        'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
+                        skip: this.posts.length,
+                        limit: 2,
+                        order: '-sys.createdAt'
+                    });
+                } catch (e) {
+                    return {
+                        loading: false,
+                        error: 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.'
+                    }
                 }
+
+                this.$store.commit('blogPosts/addPost', posts.items);
+                this.loading = false;
+                this.hasMoreContent = posts.items.length < posts.total;
             },
 
             beforeEnter(el) {
@@ -146,8 +112,8 @@
                 el.style.top = '100px';
             },
 
-            enter(el, done) {
-                const delay = (el.dataset.index - this.skip * 100) + 300; // + 300 is page transition delay
+            enter(el) {
+                const delay = (el.dataset.index - this.posts.length * 100) + 300; // + 300 is page transition delay
                 setTimeout(() => {
                     TweenLite.to(el, 0.4, {
                         opacity: 1,
@@ -161,7 +127,7 @@
 
 
 <style scoped lang="scss">
-    @import '../assets/css/prism-darcula.css';
+    @import '~/assets/css/prism-darcula.css';
 
     .blog {
         margin-bottom: 3rem;
