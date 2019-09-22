@@ -1,7 +1,5 @@
 <template>
     <section class="gallery">
-
-
         <div class="gallery__tab"
              :style="{ '--itemsPerRow': itemsPerRow}"
         >
@@ -78,7 +76,7 @@
     }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     $gallery-gap: 1%;
 
     .gallery__tab {
@@ -116,12 +114,8 @@
                 transform: scale(1.05);
             }
         }
-    }
-</style>
 
-<style lang="scss">
-    .image__container {
-        img {
+        /deep/ img {
             width: 100%;
             height: 100%;
             object-fit: cover;
