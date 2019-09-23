@@ -2,7 +2,7 @@ const contentful = require('contentful');
 const contentfulConfig = require('./.contentful.json');
 
 
-/*const generateRoutes = async () => {
+const generateRoutes = async () => {
     const client = contentful.createClient({
         space:  contentfulConfig.CTF_SPACE_ID,
         accessToken: contentfulConfig.CTF_CDA_ACCESS_TOKEN
@@ -19,7 +19,7 @@ const contentfulConfig = require('./.contentful.json');
             payload: post
         };
     });
-};*/
+};
 
 export default {
     mode: 'spa',
@@ -127,23 +127,7 @@ export default {
     ** Build configuration
     */
     generate: {
-        routes: () => {
-            const client = contentful.createClient({
-                space:  contentfulConfig.CTF_SPACE_ID,
-                accessToken: contentfulConfig.CTF_CDA_ACCESS_TOKEN
-            });
-
-            return client.getEntries({
-                content_type: contentfulConfig.CTF_BLOG_POST_TYPE_ID
-            }).then((posts) => {
-                return posts.items.map(post => {
-                    return {
-                        route: '/blog/' + post.fields.slug,
-                        payload: post
-                    };
-                });
-            });
-        },
+        routes: generateRoutes,
         subFolders: false
     },
     build: {

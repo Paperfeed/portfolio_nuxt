@@ -29,7 +29,6 @@
 </template>
 
 <script>
-    import { createClient } from '~/plugins/contentful';
     import { TweenLite } from 'gsap';
     import LoadingSpinner from '~/components/LoadingSpinner';
     import BlogPost from '~/components/BlogPost';
@@ -39,7 +38,6 @@
     import { mapState } from 'vuex';
     import GoBackInApp from '../../components/GoBackInApp';
 
-    const client = createClient();
 
     export default {
         name: 'blog-slug',

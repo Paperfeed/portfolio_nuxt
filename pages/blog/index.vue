@@ -43,10 +43,8 @@
     import ScrollToTop from '~/components/ScrollToTop';
     import Prism from 'prismjs';
     import Message from '~/components/Message';
-    import { createClient } from '../../plugins/contentful';
     import { mapState } from 'vuex';
 
-    const client = createClient();
 
     export default {
         name: 'Blog',
