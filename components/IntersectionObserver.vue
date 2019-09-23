@@ -37,7 +37,9 @@
         mounted() {
             this.observer = new IntersectionObserver(entries => {
                 this.checkIfIntersecting(entries[0])
-            }, this.options)
+            }, this.options);
+
+            if (this.isActive) this.observer.observe(this.$refs.trigger);
         },
 
         destroyed() {

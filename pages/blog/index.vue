@@ -66,8 +66,8 @@
 
         computed: mapState('blogPosts', ['posts', 'hasMoreContent', 'isLoading']),
 
-        fetch({ store }) {
-            store.dispatch('blogPosts/getMorePosts');
+        async fetch({ store }) {
+            await store.dispatch('blogPosts/getMorePosts');
         },
 
         updated() {

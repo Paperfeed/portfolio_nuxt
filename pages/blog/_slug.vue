@@ -54,7 +54,7 @@
         computed: mapState('blogPost', ['post', 'isLoading', 'error']),
 
         async fetch({ store, params }) {
-            return await store.dispatch('blogPost/getPost', params.slug);
+            await store.dispatch('blogPost/getPost', params.slug);
         },
 
         updated() {
