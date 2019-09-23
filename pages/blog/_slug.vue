@@ -3,11 +3,7 @@
         <div class="columns is-centered">
             <div class="column blog">
                 <div class="blog-back-button">
-                    <!--
-                    TODO: Should look into checking if there is previous history in the router
-                            and calling $router.back() instead
-                    -->
-                    <nuxt-link :to="{name: 'blog'}"><i class="fa fa-arrow-left"></i> Back to blog</nuxt-link>
+                    <go-back-in-app :fallback="{name: 'blog'}"><i class="fa fa-arrow-left"></i> Back to blog</go-back-in-app>
                 </div>
 
                 <transition-group v-if="!error"
@@ -16,16 +12,15 @@
                                   tag="div"
                                   class="blog-post-list"
                                   v-bind:css="false"
-                                  @before-enter="beforeEnter"
                                   @enter="enter">
                     <blog-post v-if="post"
-                               v-bind="post"
+                               v-bind="post.fields"
                                key="blog-post"
                     />
                 </transition-group>
                 <message v-else :message="error" type="error"/>
 
-                <loading-spinner styleClass="black" v-if="!post"/>
+                <loading-spinner styleClass="black" v-if="isLoading"/>
 
                 <scroll-to-top/>
             </div>
@@ -41,41 +36,25 @@
     import ScrollToTop from '~/components/ScrollToTop';
     import Prism from 'prismjs';
     import Message from '~/components/Message';
+    import { mapState } from 'vuex';
+    import GoBackInApp from '../../components/GoBackInApp';
 
     const client = createClient();
 
     export default {
         name: 'blog-slug',
         components: {
+            GoBackInApp,
             Message,
             ScrollToTop,
             BlogPost,
             LoadingSpinner,
         },
 
-        data() {
-            return {
-                error: false,
-                post: null
-            }
-        },
+        computed: mapState('blogPost', ['post', 'isLoading', 'error']),
 
-        async asyncData({ env, params }) {
-            let post;
-            try {
-                post = await client.getEntries({
-                    'content_type': env.CTF_BLOG_POST_TYPE_ID,
-                    'fields.slug[in]': params.id
-                });
-            } catch (e) {
-                return {
-                    error: 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.'
-                }
-            }
-
-            return {
-                post: post.items[0].fields,
-            }
+        async fetch({ store, params }) {
+            return await store.dispatch('blogPost/getPost', params.slug);
         },
 
         updated() {
@@ -83,18 +62,8 @@
         },
 
         methods: {
-            beforeEnter(el) {
-                el.style.opacity = 0;
-                el.style.top = '100px';
-            },
-
             enter(el) {
-                setTimeout(() => {
-                    TweenLite.to(el, 0.4, {
-                        opacity: 1,
-                        top: 0
-                    })
-                })
+                TweenLite.from(el, 0.4, { height: 0 })
             },
         },
     }

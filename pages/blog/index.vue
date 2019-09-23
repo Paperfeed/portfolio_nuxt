@@ -1,10 +1,9 @@
 <template>
-    <section class="section">
+    <section class="section" ref="intersectionRoot">
         <div class="columns is-centered">
             <div class="column blog">
                 <h1 class="title">Ramblings of a madman</h1>
                 <h2 class="subtitle">or just a boring blog, whatever</h2>
-
                 <transition-group v-if="!error"
                                   appear
                                   name="slide-fade"
@@ -23,11 +22,11 @@
                 </transition-group>
                 <message v-else :message="error" type="error"/>
 
-                <intersection-observer :is-active="!loading && hasMoreContent"
-                                       @triggered="retrievePosts"
+                <intersection-observer :is-active="!isLoading && hasMoreContent"
+                                       @onTriggered="getMorePosts"
                 />
 
-                <loading-spinner styleClass="black" v-if="loading"/>
+                <loading-spinner styleClass="black" v-if="isLoading"/>
 
                 <scroll-to-top/>
             </div>
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-    import { createClient } from '~/plugins/contentful';
+
     import { TweenLite } from 'gsap';
     import LoadingSpinner from '~/components/LoadingSpinner';
     import BlogPost from '~/components/BlogPost';
@@ -44,6 +43,8 @@
     import ScrollToTop from '~/components/ScrollToTop';
     import Prism from 'prismjs';
     import Message from '~/components/Message';
+    import { createClient } from '../../plugins/contentful';
+    import { mapState } from 'vuex';
 
     const client = createClient();
 
@@ -60,23 +61,13 @@
         data() {
             return {
                 error: false,
-                loading: true,
             }
         },
 
-        computed: {
-            posts() {
-                return this.$store.state.blogPosts.posts;
-            }
-        },
+        computed: mapState('blogPosts', ['posts', 'hasMoreContent', 'isLoading']),
 
-        mounted() {
-            this.retrievePosts();
-        },
-
-        created() {
-            this.id = null;
-            this.hasMoreContent = false;
+        fetch({ store }) {
+            store.dispatch('blogPosts/getMorePosts');
         },
 
         updated() {
@@ -84,27 +75,8 @@
         },
 
         methods: {
-            async retrievePosts() {
-                let posts;
-                this.loading = true;
-
-                try {
-                    posts = await client.getEntries({
-                        'content_type': process.env.CTF_BLOG_POST_TYPE_ID,
-                        skip: this.posts.length,
-                        limit: 2,
-                        order: '-sys.createdAt'
-                    });
-                } catch (e) {
-                    return {
-                        loading: false,
-                        error: 'A network error has occurred. Maybe the servers aren\'t working or your internet is down.'
-                    }
-                }
-
-                this.$store.commit('blogPosts/addPost', posts.items);
-                this.loading = false;
-                this.hasMoreContent = posts.items.length < posts.total;
+            getMorePosts() {
+                this.$store.dispatch('blogPosts/getMorePosts');
             },
 
             beforeEnter(el) {

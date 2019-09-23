@@ -1,4 +1,25 @@
-import contentful from './.contentful.json';
+const contentful = require('contentful');
+const contentfulConfig = require('./.contentful.json');
+
+
+const generateRoutes = async () => {
+    const client = contentful.createClient({
+        space:  contentfulConfig.CTF_SPACE_ID,
+        accessToken: contentfulConfig.CTF_CDA_ACCESS_TOKEN
+    });
+
+    const posts = await client.getEntries({
+        content_type: contentfulConfig.CTF_BLOG_POST_TYPE_ID
+    });
+
+
+    return posts.items.map(post => {
+        return {
+            route: '/blog/' + post.fields.slug,
+            payload: post
+        };
+    });
+};
 
 export default {
     mode: 'spa',
@@ -37,7 +58,7 @@ export default {
         '@fortawesome/fontawesome-free-webfonts/css/fa-solid.css',
     ],
     env: {
-        ...contentful
+        ...contentfulConfig
     },
     /*
     ** Plugins to load before mounting the App
@@ -106,6 +127,7 @@ export default {
     ** Build configuration
     */
     generate: {
+        routes: generateRoutes,
         subFolders: false
     },
     build: {
