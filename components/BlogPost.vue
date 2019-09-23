@@ -1,6 +1,9 @@
 <template>
     <div class="blog-post">
-        <h2 class="title is-3"><nuxt-link :to="'/blog/' + slug">{{title}}</nuxt-link></h2>
+        <h2 class="title is-3">
+            <nuxt-link v-if="!disableLink" :to="'/blog/' + slug">{{title}}</nuxt-link>
+            <div v-else>{{title}}</div>
+        </h2>
         <h3 class="subtitle is-6">Posted on {{ date }}</h3>
 
         <hr>
@@ -42,7 +45,8 @@
             },
             post: String,
             images: Object,
-            shorten: String
+            shorten: String,
+            disableLink: Boolean
         },
         computed: {
             dateAsString() {

@@ -3,7 +3,9 @@
         <div class="columns is-centered">
             <div class="column blog">
                 <div class="blog-back-button">
-                    <go-back-in-app :fallback="{name: 'blog'}"><i class="fa fa-arrow-left"></i> Back to blog</go-back-in-app>
+                    <go-back-in-app :fallback="{name: 'blog'}">
+                        <i class="fa fa-arrow-left"></i> Back to blog
+                    </go-back-in-app>
                 </div>
 
                 <transition-group v-if="!error"
@@ -16,6 +18,7 @@
                     <blog-post v-if="post"
                                v-bind="post.fields"
                                key="blog-post"
+                               :disableLink="true"
                     />
                 </transition-group>
                 <message v-else :message="error" type="error"/>
@@ -64,7 +67,13 @@
 
         methods: {
             enter(el) {
-                TweenLite.from(el, 0.4, { height: 0 })
+                TweenLite.fromTo(el, 0.4, {
+                    x: '-50%',
+                    opacity: 0,
+                }, {
+                    x: '0%',
+                    opacity: 1,
+                })
             },
         },
     }

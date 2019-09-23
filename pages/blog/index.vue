@@ -10,7 +10,7 @@
                                   tag="div"
                                   class="blog-post-list"
                                   v-bind:css="false"
-                                  @before-enter="beforeEnter"
+                                  @beforeEnter="beforeEnter"
                                   @enter="enter">
                     <blog-post v-for="(post, index) in posts"
                                v-bind="post.fields"
@@ -79,15 +79,18 @@
 
             beforeEnter(el) {
                 el.style.opacity = 0;
-                el.style.top = '100px';
             },
 
             enter(el) {
                 const delay = (el.dataset.index - this.posts.length * 100) + 300; // + 300 is page transition delay
                 setTimeout(() => {
-                    TweenLite.to(el, 0.4, {
+                    TweenLite.fromTo(el, 0.4, {
+                        y: '20%',
+                        opacity: 0,
+                    }, {
+                        y: '0%',
                         opacity: 1,
-                        top: 0
+                        clearProps: 'all'
                     })
                 }, delay)
             },
