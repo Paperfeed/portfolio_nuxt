@@ -1,5 +1,5 @@
-const contentful = require('contentful');
-const contentfulConfig = require('./.contentful.json');
+import * as contentful from 'contentful';
+import contentfulConfig from './.contentful.json';
 
 
 const generateRoutes = async () => {
@@ -20,6 +20,7 @@ const generateRoutes = async () => {
         };
     });
 };
+
 
 export default {
     mode: 'spa',
@@ -127,12 +128,11 @@ export default {
     ** Build configuration
     */
     generate: {
-        routes: generateRoutes,
-        subFolders: false
+        routes: generateRoutes
     },
     build: {
         cache: true,
-        // hardSource: true,
+        hardSource: true,
         parallel: true,
         extend(config, { isDev, isClient, loaders: { vue } }) {
             if (isDev) {
