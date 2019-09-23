@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="go-back" @click="goBack" :class="options.class" :style="options.style">
+        <go-back-in-app class="go-back" :fallback="{name: 'portfolio'}" :class="options.class" :style="options.style">
             <i class="fas fa-arrow-left"></i>
             <logo/>
-        </div>
+        </go-back-in-app>
         <show-source-code :source="options.source"/>
         <nuxt/>
     </div>
@@ -12,12 +12,10 @@
 <script>
     import Logo from '../components/Logo.vue';
     import ShowSourceCode from '../components/ShowSourceCode';
+    import GoBackInApp from '../components/GoBackInApp';
 
     export default {
         methods: {
-            goBack() {
-                this.$router.back();
-            }
         },
         computed: {
             options() {
@@ -37,6 +35,7 @@
             },
         },
         components: {
+            GoBackInApp,
             ShowSourceCode,
             Logo
         }

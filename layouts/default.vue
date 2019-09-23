@@ -72,6 +72,14 @@
             }
         },
 
+        watch: {
+            '$route'(to, from) {
+                if (to.path !== from.path) {
+                    this.$store.commit('setLastVisitedRoute', {name: from.name, path: from.path})
+                }
+            }
+        },
+
         computed: {
             isUsingInternetExplorer() {
                 const userAgent = window.navigator.userAgent;
