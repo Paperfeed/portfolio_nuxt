@@ -85,10 +85,9 @@
         color: black;
 
         @include mobile {
-            margin-left: -3rem;
-            margin-right: -3rem;
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
             margin-bottom: 0;
-
             border-radius: 0;
             box-shadow: none;
             border-top: 1px solid #d8d8d8;

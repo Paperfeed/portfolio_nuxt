@@ -17,9 +17,9 @@
     import {TimelineLite} from 'gsap';
 
     export default {
-
         name: 'ScrollToTop',
         components: { BIcon },
+
         mounted() {
             const { circle, icon } = this.$refs;
 
@@ -37,9 +37,11 @@
 
             this.listener = window.addEventListener('scroll', throttle(this.checkPosition, 250));
         },
+
         destroyed() {
             window.removeEventListener('scroll', this.listener);
         },
+
         methods: {
             scrollToTop() {
                 window.scroll({
@@ -47,8 +49,8 @@
                     behavior: 'smooth'
                 });
             },
-            checkPosition(event) {
 
+            checkPosition(event) {
                 if (event.target.scrollingElement.scrollTop > 1000) {
                     this.timeline.play();
                 } else {
