@@ -8,18 +8,22 @@
         props: {
             options: {
                 type: Object,
-                default: () => {return {
-                    root: null,
-                    threshold: 1,
-                }}
+                default: () => {
+                    return {
+                        root: null,
+                        threshold: 1,
+                    }
+                }
             },
             isActive: Boolean,
         },
+
         data() {
             return {
                 observer: null
             }
         },
+
         watch: {
             isActive() {
                 if (this.isActive) {
@@ -29,17 +33,20 @@
                 }
             }
         },
+
         mounted() {
             this.observer = new IntersectionObserver(entries => {
                 this.checkIfIntersecting(entries[0])
             }, this.options)
         },
+
         destroyed() {
             this.observer.disconnect();
         },
+
         methods: {
             checkIfIntersecting(entry) {
-                if (entry.isIntersecting) this.$emit('triggered');
+                if (entry.isIntersecting) this.$emit('onTriggered');
             }
         }
     }
