@@ -27,22 +27,24 @@
                   v-on:change="onLightboxChange"
         />
 
-        <b-pagination :current.sync="currentTab"
-                      :total="images.length"
+        <b-pagination :total="images.length"
+                      :current.sync="currentTab"
                       :per-page="pagination"
+                      icon-pack="fas"
+                      icon-prev="caret-left"
+                      icon-next="caret-right"
                       order="is-centered">
         </b-pagination>
     </section>
 </template>
 
 <script>
-    import BPagination from 'buefy/src/components/pagination/Pagination';
     import Lightbox from './Lightbox';
     import LazyImage from './LazyImage';
 
     export default {
         name: 'photo-gallery',
-        components: { LazyImage, Lightbox, BPagination },
+        components: { LazyImage, Lightbox },
         props: {
             images: Array,
             pagination: Number,

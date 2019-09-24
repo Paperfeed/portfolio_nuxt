@@ -73,8 +73,8 @@ export default {
     ** Nuxt.js modules
     */
     modules: [
-        'nuxt-buefy', // https://buefy.github.io/#/documentation
         // 'nuxt-fontawesome', // https://www.npmjs.com/package/nuxt-fontawesome
+        'nuxt-buefy',
         '@nuxtjs/axios', // https://axios.nuxtjs.org/usage
         '@nuxtjs/pwa',
         '@bazzite/nuxt-optimized-images', // https://github.com/bazzite/nuxt-optimized-images,
@@ -88,8 +88,9 @@ export default {
             }
         ]
     },
-    buefy: {
-        css: false
+    buefy :{
+        css: false,
+        materialDesignIcons: false
     },
     optimizedImages: {
         inlineImageLimit: -1,
