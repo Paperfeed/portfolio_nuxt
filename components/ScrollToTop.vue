@@ -32,7 +32,8 @@
             }).from( icon, .6, {
                 opacity: 0,
                 y: '60%',
-                ease: Bounce.easeOut
+                ease: Bounce.easeOut,
+                clearProps: 'all'
             });
 
             this.listener = window.addEventListener('scroll', throttle(this.checkPosition, 250));
