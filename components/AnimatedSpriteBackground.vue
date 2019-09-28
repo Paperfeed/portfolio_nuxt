@@ -20,16 +20,28 @@
                 resizeTo: this.$refs.stageElement
             });
 
-            this.onResize = window.addEventListener('resize', throttle(this.createAnimatedBackground, 500));
+            this.onResizeListener = window.addEventListener('resize', throttle(this.createAnimatedBackground, 500));
+            this.visibilityListener = document.addEventListener('visibilitychange', this.visibilityChanged);
             this.createAnimatedBackground();
         },
 
         beforeDestroy() {
             this.pixi.destroy();
-            window.removeEventListener('resize', this.onResize);
+            window.removeEventListener('resize', this.onResizeListener);
+            document.removeEventListener('visibilitychange', this.visibilityListener);
         },
 
         methods: {
+            visibilityChanged({target}) {
+                if (!this.ticker) return;
+
+                if (target.hidden) {
+                    this.ticker.stop();
+                } else {
+                    this.ticker.start();
+                }
+            },
+
             createAnimatedBackground() {
                 const { stageElement } = this.$refs;
                 const pixi = this.pixi;
