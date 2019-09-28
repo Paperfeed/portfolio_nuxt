@@ -138,10 +138,10 @@
                     background: transparent;
                 }
             }
-        }
 
-        /deep/ .logo {
-            filter: drop-shadow( 0 0 4px white);
+            /deep/ .logo {
+                filter: drop-shadow( 0 0 4px white);
+            }
         }
     }
 </style>
