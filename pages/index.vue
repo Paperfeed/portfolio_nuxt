@@ -81,10 +81,6 @@ I'm for hire, by the way😉`,
         position: relative;
     }
 
-    /*.hero-body {
-        position: relative;
-    }*/
-
     .caret {
         animation: caret 1.06s linear infinite;
     }
