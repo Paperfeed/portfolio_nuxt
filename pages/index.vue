@@ -1,7 +1,7 @@
 <template>
     <section class="hero is-primary is-fullheight-with-navbar">
+        <animated-sprite-background/>
         <div class="hero-body">
-            <animated-sprite-background/>
             <div class="container has-text-centered">
                 <h1 class="title">
                     <div class="inline">
