@@ -9,8 +9,6 @@
     import { GeneratePoints } from '../assets/js/poisson-disc-sampler';
     import throttle from 'lodash-es/throttle';
 
-    const shaderCode = ``;
-
     export default {
         name: 'AnimatedSpriteBackground',
 
