@@ -109,10 +109,14 @@
                 pixi.stage.filters = [
                     new CRTFilter({
                         lineContrast: 0.5,
-                        noise: 0.5,
+                        noise: 0.35,
                         vignettingAlpha: 0.3
                     }),
-                    new TiltShiftFilter(10, 500, new PIXI.Point(0, stageHeight / 2 + 25), new PIXI.Point(stageWidth, stageHeight / 2 + 25))
+                    new TiltShiftFilter(10, 500,
+                        new PIXI.Point(0, stageHeight / 2 + 25),
+                        new PIXI.Point(stageWidth, stageHeight / 2 + 25),
+                        new PIXI.filters.FXAAFilter()
+                    )
                 ];
             },
 
