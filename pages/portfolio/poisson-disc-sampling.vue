@@ -330,8 +330,13 @@
             this.pixi.renderer.backgroundColor = 0x555566;
             stage.appendChild(this.pixi.view);
 
-            window.onresize = throttle(this.rerunAlgorithm, 100);
+            this.onResize = window.addEventListener('resize', throttle(this.rerunAlgorithm, 100));
             this.switchAlgorithm(this.selectedAlgorithm);
+        },
+
+        beforeDestroy() {
+            this.pixi.destroy();
+            window.removeEventListener('resize', this.onResize);
         }
     }
 </script>
