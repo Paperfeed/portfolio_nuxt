@@ -8,11 +8,11 @@
 
         <hr>
         <div v-if="header" class="blog-post-media" >
-            <img :src="header.url" :alt="header.title" />
+            <img :src="header.url" :alt="header.title" loading="lazy"/>
         </div>
 
         <div class="blog-post-content content" :class="shorten ? 'shortened' : ''">
-            <vue-markdown>{{shorten ? post.slice(0, post.indexOf(' ', shorten)) + ' ...' : post}}</vue-markdown>
+            <vue-markdown :postrender="transformPost">{{shorten ? post.slice(0, post.indexOf(' ', shorten)) + ' ...' : post}}</vue-markdown>
         </div>
 
         <div class="buttons is-centered" v-if="shorten">
@@ -65,6 +65,12 @@
                     return false;
                 }
             }
+        },
+
+        methods: {
+            transformPost(post) {
+                return post.replace('<img', '<img loading="lazy"');
+            }
         }
     }
 </script>
@@ -108,10 +114,18 @@
         }
 
         img {
-            margin: 0.5rem 0;
+            width: 100%;
+            max-height: 28.3rem;
+            object-fit: contain;
+            background: #ececec;
 
             ~ em {
-                margin-left: 1rem;
+                display: block;
+                margin-left: 0;
+                margin-top: -0.4rem;
+                padding: .7rem .9rem;
+                background: $primary;
+                color: white;
             }
         }
 
@@ -123,11 +137,6 @@
                 font-family: 'Consolas', monospace;
                 font-size: 12px;
             }
-        }
-
-        h4 {
-            font-size: 1.3em;
-            font-weight: 200;
         }
 
         ul {
@@ -154,5 +163,6 @@
     .blog-post-media {
         float: left;
         margin: .5rem 1rem .5rem 0;
+        max-width: 40%;
     }
 </style>
