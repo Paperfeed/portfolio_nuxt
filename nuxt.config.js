@@ -133,7 +133,7 @@ export default {
     },
     build: {
         cache: true,
-        hardSource: true,
+        // hardSource: true,
         parallel: true,
         extend(config, { isDev, isClient, loaders: { vue } }) {
             if (isDev) {
