@@ -134,8 +134,8 @@
             background: transparent;
 
             .navbar-brand, .navbar-item {
-                &:focus, &:hover {
-                    background: transparent;
+                &:focus {
+                    background: transparent !important;
                 }
             }
 
