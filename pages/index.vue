@@ -1,7 +1,7 @@
 <template>
     <section class="hero is-primary is-fullheight-with-navbar">
         <div class="hero-body">
-            <!--            <poly-text/>-->
+            <animated-sprite-background/>
             <div class="container has-text-centered">
                 <h1 class="title">
                     <div class="inline">
@@ -19,11 +19,15 @@
 </template>
 
 <script>
-    // import PolyText from '../components/PolyText';
+
+    import AnimatedSpriteBackground from '../components/AnimatedSpriteBackground';
 
     export default {
         name: 'HomePage',
-        components: { /*PolyText*/ },
+        components: { AnimatedSpriteBackground },
+        layoutOptions: {
+            navbarClass: 'transparent'
+        },
 
         props: {
             string: {
@@ -50,7 +54,10 @@
 
                     setTimeout(this.simulateTypingName, (Math.random() * 30) + this.typeDelay)
                 } else {
-                    setTimeout(() => {this.finishedTyping = true}, 500);
+                    // Delay before adding the subtitle
+                    setTimeout(() => {
+                        this.finishedTyping = true
+                    }, 500);
                 }
             }
         },
@@ -74,10 +81,13 @@ I'm for hire, by the way😉`,
         position: relative;
     }
 
+    /*.hero-body {
+        position: relative;
+    }*/
+
     .caret {
         animation: caret 1.06s linear infinite;
     }
-
 
     .sub-text {
         transition: all .4s ease-in-out;
