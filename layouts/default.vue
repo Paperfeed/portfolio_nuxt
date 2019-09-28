@@ -6,7 +6,7 @@
              aria-label="main navigation"
         >
             <div class="navbar-brand">
-                <nuxt-link class="navbar-item" to="/">
+                <nuxt-link class="navbar-item" to="/" @click.native="closeNav">
                     <Logo/>
                 </nuxt-link>
                 <div class="navbar-burger" @click="toggleNav">
