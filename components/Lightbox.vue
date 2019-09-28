@@ -42,15 +42,17 @@
             }
         },
         mounted() {
-            this.listeners = [];
-            this.listeners.push(window.addEventListener('keyup', this.hotkeyHandler));
-            this.listeners.push(window.addEventListener('wheel', this.hotkeyHandler));
+            window.addEventListener('keyup', this.hotkeyHandler);
+            window.addEventListener('wheel', this.hotkeyHandler);
             this.timeline = new TimelineLite();
         },
+
         beforeDestroy() {
-            this.listeners.forEach(listener => window.removeEventListener(listener, this.hotkeyHandler));
+            window.removeEventListener('keyup', this.hotkeyHandler);
+            window.removeEventListener('wheel', this.hotkeyHandler);
             ScrollLock.enableScroll(document.documentElement);
         },
+
         computed: {
             totalImages() {
                 return this.images.length + 1;

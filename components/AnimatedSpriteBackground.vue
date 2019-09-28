@@ -18,15 +18,15 @@
                 resizeTo: this.$refs.stageElement
             });
 
-            this.onResizeListener = window.addEventListener('resize', throttle(this.createAnimatedBackground, 500));
-            this.visibilityListener = document.addEventListener('visibilitychange', this.visibilityChanged);
+            window.addEventListener('resize', throttle(this.createAnimatedBackground, 500));
+            document.addEventListener('visibilitychange', this.visibilityChanged);
             this.createAnimatedBackground();
         },
 
         beforeDestroy() {
             this.pixi.destroy();
-            window.removeEventListener('resize', this.onResizeListener);
-            document.removeEventListener('visibilitychange', this.visibilityListener);
+            window.removeEventListener('resize', this.createAnimatedBackground);
+            document.removeEventListener('visibilitychange', this.visibilityChanged);
         },
 
         methods: {
