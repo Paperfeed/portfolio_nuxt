@@ -8,10 +8,10 @@
 
         <hr>
         <div v-if="header" class="blog-post-media" >
-            <img :src="header.url" :alt="header.title" loading="lazy"/>
+            <img :src="header.url + '?w=400&h=400'" :alt="header.title" loading="lazy"/>
         </div>
 
-        <div class="blog-post-content content" :class="shorten ? 'shortened' : ''">
+        <div class="blog-post-content content" ref="content" :class="shorten ? 'shortened' : ''">
             <vue-markdown :postrender="transformPost">{{shorten ? post.slice(0, post.indexOf(' ', shorten)) + ' ...' : post}}</vue-markdown>
         </div>
 
@@ -69,7 +69,9 @@
 
         methods: {
             transformPost(post) {
-                return post.replace('<img', '<img loading="lazy"');
+                post = post.replace(/<img/gm, '$& loading="lazy"');
+                post = post.replace(/(img.+src=")(.+?)"/gm, '$1$2?w=800&h=600"');
+                return post
             }
         }
     }
