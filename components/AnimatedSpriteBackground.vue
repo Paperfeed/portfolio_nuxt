@@ -102,7 +102,7 @@
                         sprite.rotation = sprite.rotation + (0.01 * delta) % 360;
                         sprite.x = (sprite.origin[0] + Math.sin(sprite.count * sprite.speed) * (sprite.width / baseSize) * 20);
                         sprite.y = (sprite.y + ((sprite.width / baseSize) * sprite.speed * delta)) % stageHeight;
-                        sprite.tint = sprite.color + (0x000010 * sprite.y / 85);
+                        sprite.tint = sprite.color + (0x000010 * (sprite.y / stageHeight) * 16);
                     });
                 });
 
@@ -146,7 +146,7 @@
 
 <style scoped lang="scss">
     .stage {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
