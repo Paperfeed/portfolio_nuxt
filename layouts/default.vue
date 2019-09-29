@@ -143,5 +143,9 @@
                 filter: drop-shadow( 0 0 4px white);
             }
         }
+
+        /deep/ .logo {
+            width: 25px;
+        }
     }
 </style>
