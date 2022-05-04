@@ -10,11 +10,25 @@
                 </h1>
                 <h2 class="subtitle">
                     <div class="inline sub-text" :class="finishedTyping ? 'animateIn' : 'hidden'">
-                        <span>Web</span> <span>Developer</span>
+                      <span>Software</span> <span>Consultancy</span>
                     </div>
                 </h2>
             </div>
         </div>
+
+        <footer>
+          <div>Arusan<br/> KvK 84379057<br/>Van Walbeeckstraat 102-1, Amsterdam</div>
+          <div style="align-self: flex-end;">
+            <div @mouseover="hoverPhone = true" @mouseleave="hoverPhone = false">
+              <span v-if="!hoverPhone" class="reverse"><span v-for="character in getPhone()">{{character}}</span></span>
+              <span v-if="hoverPhone" style="display: flex;"><a style="margin-left: auto;" :href="`tel:${getPhone().split(' ').reverse().join('')}`">{{ getPhone().split(' ').reverse().join('') }}</a></span>
+            </div>
+            <div @mouseover="hoverEmail = true" @mouseleave="hoverEmail = false">
+              <span v-if="!hoverEmail" class="reverse"><span v-for="character in getEmail()">{{character}}</span></span>
+              <span v-if="hoverEmail"><a :href="`mailto:${getEmail().split(' ').reverse().join('')}`">{{ getEmail().split(' ').reverse().join('') }}</a></span>
+            </div>
+          </div>
+        </footer>
     </section>
 </template>
 
@@ -23,31 +37,26 @@
     import AnimatedSpriteBackground from '../components/AnimatedSpriteBackground';
 
     export default {
-        name: 'HomePage',
         components: { AnimatedSpriteBackground },
+        data() {
+            return {
+                finishedTyping: false,
+                hoverEmail: false,
+                hoverPhone: true,
+                title: '',
+            }
+        },
         layoutOptions: {
             navbarClass: 'transparent'
         },
 
-        props: {
-            string: {
-                type: String,
-                default: 'Aldert Vaandering'
-            },
-            typeDelay: {
-                type: Number,
-                default: 70
-            }
-        },
-
-        data() {
-            return {
-                title: '',
-                finishedTyping: false
-            }
-        },
-
         methods: {
+            getEmail() {
+                return 'g n i r e d n a a v t r e d l a @ e m'
+            },
+            getPhone() {
+              return '9 9 5 5 7 7 3 8 6 1 3 +'
+            },
             simulateTypingName() {
                 if (this.title.length < this.string.length) {
                     this.title = this.string.substring(0, this.title.length + 1);
@@ -64,6 +73,19 @@
 
         mounted() {
             setTimeout(this.simulateTypingName, 650);
+        },
+
+        name: 'HomePage',
+
+        props: {
+            string: {
+                default: 'Aldert Vaandering',
+                type: String
+            },
+            typeDelay: {
+                default: 70,
+                type: Number
+            }
         }
     }
 
@@ -96,6 +118,24 @@ I'm for hire, by the way😉`,
 
     .animateIn {
         clip-path: inset(0 0 0 0);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+    .reverse {
+      display: flex;
+      flex-direction: row-reverse;
     }
 
     @keyframes caret {

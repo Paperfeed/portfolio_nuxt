@@ -40,54 +40,10 @@
     import Logo from '../components/Logo.vue';
 
     export default {
-        data() {
-            return {
-                navHidden: true,
-                items: [
-                    {
-                        title: 'Blog',
-                        to: { name: 'blog' }
-                    },
-                    {
-                        title: 'Gallery',
-                        to: { name: 'gallery' }
-                    },
-                    {
-                        title: 'Portfolio',
-                        to: { name: 'portfolio' }
-                    },
-                ]
-            }
+        components: {
+            Logo
         },
-
-        methods: {
-            closeNav() {
-                this.navHidden = true;
-            },
-            toggleNav() {
-                this.navHidden = !this.navHidden;
-            }
-        },
-
-        watch: {
-            '$route'(to, from) {
-                if (to.path !== from.path) {
-                    this.$store.commit('setLastVisitedRoute', { name: from.name, path: from.path })
-                }
-            }
-        },
-
         computed: {
-            layoutOptions() {
-                const defaultOptions = {
-                    navbarClass: ''
-                };
-
-                return this.$route.matched.map(r => {
-                    return (r.components.default.options.layoutOptions ? r.components.default.options.layoutOptions : defaultOptions);
-                })[0];
-            },
-
             isUsingInternetExplorer() {
                 const userAgent = window.navigator.userAgent;
                 const testForIE = /(MSIE|Trident|Edge).+?([\d.]+)\b/.exec(userAgent);
@@ -107,18 +63,57 @@
                             return true;
                     }
                 }
+            },
+
+            layoutOptions() {
+                const defaultOptions = {
+                    navbarClass: ''
+                };
+
+                return this.$route.matched.map(r => {
+                    return (r.components.default.options.layoutOptions ? r.components.default.options.layoutOptions : defaultOptions);
+                })[0];
             }
         },
-
+        data() {
+            return {
+                items: [
+                  {
+                    title: 'Portfolio',
+                    to: { name: 'portfolio' }
+                  },
+                  {
+                    title: 'Gallery',
+                    to: { name: 'gallery' }
+                  },
+                  {
+                    title: 'Blog',
+                    to: { name: 'blog' }
+                  },
+                ],
+                navHidden: true
+            }
+        },
+        methods: {
+            closeNav() {
+                this.navHidden = true;
+            },
+            toggleNav() {
+                this.navHidden = !this.navHidden;
+            }
+        },
         mounted() {
             if (this.isUsingInternetExplorer) {
                 alert('Your browser is not supported and should really be updated or replaced, ' +
                     'for a safer and better web');
             }
         },
-
-        components: {
-            Logo
+        watch: {
+            '$route'(to, from) {
+                if (to.path !== from.path) {
+                    this.$store.commit('setLastVisitedRoute', { name: from.name, path: from.path })
+                }
+            }
         },
     }
 </script>
